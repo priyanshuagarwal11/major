@@ -10,6 +10,7 @@ import type {
   InterviewMessage 
 } from '../types';
 import { fetchCareerOverview } from '../api/apiClient';
+import { getStoredJobs, saveStoredJobs } from '../api/apiJobs';
 
 const initialFeatures: FeatureItem[] = [
   { id: 'feature1', title: 'AI Resume Analysis', description: 'Get intelligent feedback, score audits, and bullet point optimizers.' },
@@ -149,7 +150,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [resumeScore, setResumeScore] = useState(84);
   const [interviewConfidence, setInterviewConfidence] = useState('Rising');
   const [nextAction, setNextAction] = useState('Optimize your project experience bullets using the XYZ formula.');
-  const [jobs, setJobs] = useState<JobItem[]>(initialJobs);
+  const [jobs, setJobs] = useState<JobItem[]>(() => getStoredJobs(initialJobs));
   const [roadmap, setRoadmap] = useState<RoadmapStep[]>(initialRoadmap);
   const [skillGaps, setSkillGaps] = useState<string[]>(['System design fundamentals', 'Advanced JavaScript event loop', 'IndexedDB & caching']);
   const [isLoading, setIsLoading] = useState(false);
@@ -168,6 +169,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       document.body.classList.remove('light-theme');
     }
   }, [theme]);
+
+  useEffect(() => {
+  saveStoredJobs(jobs);
+}, [jobs]);
 
   const toggleTheme = useCallback(() => {
     setTheme((current) => (current === 'dark' ? 'light' : 'dark'));

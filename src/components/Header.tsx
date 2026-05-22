@@ -1,5 +1,6 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
+import { useAuthContext } from '../context/AuthContext';
 
 const navItems = [
   { path: '/', label: 'Home' },
@@ -14,22 +15,26 @@ const navItems = [
 
 export default function Header() {
   const { theme, toggleTheme, resumeScore } = useAppContext();
+  const { user, isAuthenticated, logout } = useAuthContext();
 
   return (
     <header className="header-shell">
-      <div className="brand">
-        <div className="logo-icon">🚀</div>
-        <div className="brand-text">
-          <strong>AI Career Copilot</strong>
-          <span>Elevating Student Growth</span>
+      <Link to="/" className="brand" aria-label="AI Career Copilot home">
+        <div className="brand-logo">
+          <span>AI</span>
         </div>
-      </div>
 
-      <nav className="nav-links">
+        <div className="brand-text">
+          <strong>Career Copilot</strong>
+          <span>AI placement assistant</span>
+        </div>
+      </Link>
+
+      <nav className="nav-links" aria-label="Main navigation">
         {navItems.map((item) => (
-          <NavLink 
-            key={item.path} 
-            to={item.path} 
+          <NavLink
+            key={item.path}
+            to={item.path}
             className={({ isActive }) => (isActive ? 'active' : '')}
           >
             {item.label}
@@ -38,29 +43,39 @@ export default function Header() {
       </nav>
 
       <div className="header-actions">
-        <div 
-          style={{ 
-            fontSize: '0.85rem', 
-            fontWeight: 600, 
-            background: 'rgba(56, 189, 248, 0.1)', 
-            color: 'var(--primary)', 
-            padding: '4px 10px', 
-            borderRadius: '9999px',
-            border: '1px solid rgba(56, 189, 248, 0.15)'
-          }}
-          title="Dynamic Resume Alignment Score"
-        >
-          Score: {resumeScore}%
+        <div className="score-pill" title="Dynamic Resume Alignment Score">
+          <span>Score</span>
+          <strong>{resumeScore}%</strong>
         </div>
-        
-        <button 
-          type="button" 
-          className="theme-toggle-btn" 
+
+        {isAuthenticated ? (
+          <div className="auth-actions">
+            <span className="user-chip">Hi, {user?.name}</span>
+            <button type="button" className="btn-secondary header-btn" onClick={logout}>
+              Logout
+            </button>
+          </div>
+        ) : (
+          <div className="auth-actions">
+            <Link to="/login" className="btn-secondary header-btn">
+              Login
+            </Link>
+            <Link to="/signup" className="btn-primary header-btn">
+              Sign up
+            </Link>
+          </div>
+        )}
+
+        <button
+          type="button"
+          className={`theme-mode-toggle ${theme === 'dark' ? 'dark-active' : 'light-active'}`}
           onClick={toggleTheme}
-          aria-label="Toggle Theme"
-          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+          title={theme === 'dark' ? 'Dark theme active' : 'Light theme active'}
         >
-          {theme === 'dark' ? '☀️' : '🌙'}
+          <span className="theme-toggle-track">
+            <span className="theme-toggle-thumb">{theme === 'dark' ? '🌙' : '☀️'}</span>
+          </span>
         </button>
       </div>
     </header>

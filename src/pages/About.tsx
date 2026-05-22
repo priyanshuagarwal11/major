@@ -10,7 +10,7 @@ export default function About() {
         </p>
       </div>
       <div className="content-block content-alt">
-        <h3>Platform capabilities</h3>
+        <h2>Platform capabilities</h2>
         <ul>
           <li>AI resume review and skill gap detection</li>
           <li>Mock interview preparation and progress tracking</li>

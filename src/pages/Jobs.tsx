@@ -1,104 +1,175 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import type { JobItem } from '../types';
 
+const columns: JobItem['status'][] = ['Wishlist', 'Applied', 'Interviewing', 'Offer', 'Rejected'];
+
+const emptyJobForm = {
+  title: '',
+  company: '',
+  location: '',
+  salary: '',
+  status: 'Wishlist' as JobItem['status'],
+  notes: '',
+  dateApplied: ''
+};
+
 export default function Jobs() {
   const { jobs, setJobs } = useAppContext();
-  
-  // States for adding jobs
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [newTitle, setNewTitle] = useState('');
-  const [newCompany, setNewCompany] = useState('');
-  const [newLocation, setNewLocation] = useState('');
-  const [newSalary, setNewSalary] = useState('');
-  const [newStatus, setNewStatus] = useState<JobItem['status']>('Wishlist');
-  const [newNotes, setNewNotes] = useState('');
 
-  // States for AI strategy modal
+  const [showJobForm, setShowJobForm] = useState(false);
+  const [editingJob, setEditingJob] = useState<JobItem | null>(null);
+  const [jobForm, setJobForm] = useState(emptyJobForm);
+
   const [selectedStrategyJob, setSelectedStrategyJob] = useState<JobItem | null>(null);
 
-  // Kanban Columns
-  const columns: JobItem['status'][] = ['Wishlist', 'Applied', 'Interviewing', 'Offer', 'Rejected'];
+  const pipelineStats = useMemo(() => {
+    return columns.map((status) => ({
+      status,
+      count: jobs.filter((job) => job.status === status).length
+    }));
+  }, [jobs]);
 
-  const handleAddJobSubmit = (e: React.FormEvent) => {
+  const updateJobForm = (field: keyof typeof emptyJobForm, value: string) => {
+    setJobForm((current) => ({
+      ...current,
+      [field]: value
+    }));
+  };
+
+  const resetJobForm = () => {
+    setJobForm(emptyJobForm);
+    setEditingJob(null);
+    setShowJobForm(false);
+  };
+
+  const openAddForm = () => {
+    setEditingJob(null);
+    setJobForm(emptyJobForm);
+    setShowJobForm(true);
+  };
+
+  const openEditForm = (job: JobItem) => {
+    setEditingJob(job);
+    setJobForm({
+      title: job.title,
+      company: job.company,
+      location: job.location,
+      salary: job.salary || '',
+      status: job.status,
+      notes: job.notes || '',
+      dateApplied: job.dateApplied || ''
+    });
+    setShowJobForm(true);
+  };
+
+  const handleJobFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTitle.trim() || !newCompany.trim()) return;
+
+    if (!jobForm.title.trim() || !jobForm.company.trim()) return;
+
+    if (editingJob) {
+      setJobs((prevJobs) =>
+        prevJobs.map((job) =>
+          job.id === editingJob.id
+            ? {
+                ...job,
+                title: jobForm.title.trim(),
+                company: jobForm.company.trim(),
+                location: jobForm.location.trim() || 'Remote',
+                salary: jobForm.salary.trim() || 'Undisclosed',
+                status: jobForm.status,
+                dateApplied:
+                  jobForm.dateApplied ||
+                  (jobForm.status !== 'Wishlist'
+                    ? new Date().toISOString().split('T')[0]
+                    : ''),
+                notes: jobForm.notes.trim()
+              }
+            : job
+        )
+      );
+
+      resetJobForm();
+      return;
+    }
 
     const newJob: JobItem = {
       id: Date.now(),
-      title: newTitle,
-      company: newCompany,
-      location: newLocation || 'Remote',
-      status: newStatus,
-      salary: newSalary || 'Undisclosed',
-      dateApplied: newStatus !== 'Wishlist' ? new Date().toISOString().split('T')[0] : '',
-      notes: newNotes
+      title: jobForm.title.trim(),
+      company: jobForm.company.trim(),
+      location: jobForm.location.trim() || 'Remote',
+      status: jobForm.status,
+      salary: jobForm.salary.trim() || 'Undisclosed',
+      dateApplied:
+        jobForm.dateApplied ||
+        (jobForm.status !== 'Wishlist' ? new Date().toISOString().split('T')[0] : ''),
+      notes: jobForm.notes.trim()
     };
 
     setJobs((prev) => [...prev, newJob]);
-    
-    // Reset form
-    setNewTitle('');
-    setNewCompany('');
-    setNewLocation('');
-    setNewSalary('');
-    setNewStatus('Wishlist');
-    setNewNotes('');
-    setShowAddForm(false);
+    resetJobForm();
   };
 
   const moveJob = (jobId: number, direction: 'left' | 'right') => {
     setJobs((prevJobs) =>
       prevJobs.map((job) => {
         if (job.id !== jobId) return job;
-        
+
         const currentIdx = columns.indexOf(job.status);
         let nextIdx = currentIdx;
-        
+
         if (direction === 'left' && currentIdx > 0) nextIdx = currentIdx - 1;
         if (direction === 'right' && currentIdx < columns.length - 1) nextIdx = currentIdx + 1;
-        
-        return { 
-          ...job, 
-          status: columns[nextIdx],
-          dateApplied: job.status === 'Wishlist' && columns[nextIdx] === 'Applied' ? new Date().toISOString().split('T')[0] : job.dateApplied
+
+        const nextStatus = columns[nextIdx];
+
+        return {
+          ...job,
+          status: nextStatus,
+          dateApplied:
+            job.status === 'Wishlist' && nextStatus === 'Applied'
+              ? new Date().toISOString().split('T')[0]
+              : job.dateApplied
         };
       })
     );
   };
 
   const deleteJob = (jobId: number) => {
-    if (window.confirm('Are you sure you want to remove this job application?')) {
-      setJobs((prev) => prev.filter((j) => j.id !== jobId));
+    if (window.confirm('Remove this job application from your tracker?')) {
+      setJobs((prev) => prev.filter((job) => job.id !== jobId));
     }
   };
 
   const getCompanyStrategy = (job: JobItem) => {
     const co = job.company.toLowerCase();
-    
+
     if (co.includes('stripe')) {
       return {
         focus: 'Robust API Design, Webhooks & System Scaling',
         checklist: [
           'Study idempotent APIs and payment transactional retries.',
-          'Prepare for active API design coding rounds: mock HTTP responses, header auth validations, and payload structures.',
-          'Review concurrent worker structures and event queue queueing algorithms.',
-          'Be ready to discuss standard databases (MySQL/Postgres) and partition/scaling strategies.'
+          'Prepare for API design rounds with auth headers, payload validation, and mock HTTP responses.',
+          'Review concurrent workers and event queue algorithms.',
+          'Be ready to discuss SQL databases and partition/scaling strategies.'
         ],
-        insiderTips: 'Stripe values elegant code structures, thorough testing, and handling complex failure routes (e.g. what happens if a webhook delivery fails twice?).'
+        insiderTips:
+          'Stripe values elegant code, strong testing, and careful handling of failure paths like webhook retries.'
       };
     }
-    
+
     if (co.includes('labs') || co.includes('vector')) {
       return {
         focus: 'Vector Databases, Embedding Models & ML Pipelines',
         checklist: [
-          'Review similarity search metric operations (Cosine Similarity, Dot Product, L2 Distance).',
-          'Understand Retrieval-Augmented Generation (RAG) frameworks: LangChain, chunking sizes, and vector retrieval strategies.',
-          'Master Node caching structures (e.g., Redis layer for caching frequent query embeddings).',
-          'Be ready to demonstrate fast aggregate analysis using MongoDB or Postgres storage engines.'
+          'Review cosine similarity, dot product, and L2 distance.',
+          'Understand RAG systems: LangChain, chunking sizes, and retrieval strategy.',
+          'Review Redis caching for frequent embeddings.',
+          'Practice MongoDB aggregation and indexing examples.'
         ],
-        insiderTips: 'Focus heavily on scaling vector search pipelines, dealing with latency bottlenecks, and designing clean TypeScript structures for AI agents.'
+        insiderTips:
+          'Focus on vector search latency, scalable retrieval, and clean TypeScript service structure.'
       };
     }
 
@@ -106,108 +177,228 @@ export default function Jobs() {
       return {
         focus: 'NLP Architectures, Recommendation Engines & SaaS Scale',
         checklist: [
-          'Review text tokenization processes and basic transformer attention concepts.',
-          'Practice designing SaaS notification feeds and background job workers in Node/Express.',
-          'Understand database scaling metrics: query indexes, shard boundaries, and connection pooling rules.',
-          'Review Event-Driven architecture setups: PubSub messaging queues.'
+          'Review tokenization and basic transformer attention concepts.',
+          'Practice SaaS notification feeds and background jobs in Node/Express.',
+          'Understand query indexes, sharding boundaries, and connection pooling.',
+          'Review event-driven architecture and PubSub messaging.'
         ],
-        insiderTips: 'CareerIQ builds software for automated matching. Emphasize your ability to parse, classify, and filter large sets of unstructured PDF data efficiently.'
+        insiderTips:
+          'Emphasize parsing, classifying, and filtering large sets of unstructured resume/job data.'
       };
     }
 
-    // Default general advice
     return {
       focus: 'MERN Full-Stack Engineering, Big-O Efficiencies & System Operations',
       checklist: [
-        'Master Express error handling middlewares and JSON Web Token (JWT) authorizations.',
-        'Review MongoDB indexing strategies, aggregate frameworks, and relationship scaling theories (embedding vs referencing).',
-        'Study fundamental coding data structures: HashMaps, Arrays, and binary traversals.',
-        'Describe testing procedures using Jest/Supertest.'
+        'Master Express error middleware and JWT authorization.',
+        'Review MongoDB indexing, aggregation, and embedding vs referencing.',
+        'Study HashMaps, Arrays, Trees, and binary traversals.',
+        'Prepare testing examples using Jest/Supertest.'
       ],
-      insiderTips: 'The hiring team values modular separation of concerns: routing controllers, schemas, services, and highly optimized layouts.'
+      insiderTips:
+        'Hiring teams like modular code: routes, controllers, schemas, services, and optimized layouts.'
     };
   };
 
   return (
     <section style={{ animation: 'fadeIn 0.4s ease-out' }}>
-      {/* Page Header */}
-      <div className="page-intro" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+      <div
+        className="page-intro"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '20px'
+        }}
+      >
         <div>
-          <span className="status-badge primary" style={{ marginBottom: '12px' }}>Job Application Pipeline</span>
+          <span className="status-badge primary" style={{ marginBottom: '12px' }}>
+            Job Application Pipeline
+          </span>
           <h1>Job Application Kanban</h1>
           <p>
-            Organize your career search pipeline visually. Drag applications from Wishlist through Offers, and unlock AI strategy prep cards.
+            Organize your career search pipeline visually. Add, edit, move, and save job
+            applications locally until the backend is ready.
           </p>
         </div>
-        
-        <button 
-          type="button" 
-          className="btn-primary" 
-          onClick={() => setShowAddForm(true)}
-        >
-          ➕ Add Job Application
+
+        <button type="button" className="btn-primary" onClick={openAddForm}>
+          Add Job Application
         </button>
       </div>
 
-      {/* Kanban Board Container */}
+      <div className="dashboard-card col-12" style={{ marginTop: '18px' }}>
+        <div className="card-title">Pipeline Summary</div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(5, minmax(120px, 1fr))',
+            gap: '12px'
+          }}
+        >
+          {pipelineStats.map((item) => (
+            <div
+              key={item.status}
+              style={{
+                background: 'var(--surface-alt)',
+                border: '1px solid var(--border)',
+                borderRadius: '12px',
+                padding: '14px'
+              }}
+            >
+              <strong style={{ display: 'block', fontSize: '1.35rem', color: 'var(--primary)' }}>
+                {item.count}
+              </strong>
+              <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+                {item.status}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="kanban-board" style={{ marginTop: '24px' }}>
         {columns.map((col) => {
-          const colJobs = jobs.filter((j) => j.status === col);
+          const colJobs = jobs.filter((job) => job.status === col);
+
           return (
             <div key={col} className="kanban-column">
               <div className="column-header">
                 <span className="column-title">
-                  {col === 'Wishlist' ? '📌' : 
-                   col === 'Applied' ? '📥' : 
-                   col === 'Interviewing' ? '🗣️' : 
-                   col === 'Offer' ? '🎉' : '❌'} {col}
+                  {col === 'Wishlist'
+                    ? '📌'
+                    : col === 'Applied'
+                      ? '📥'
+                      : col === 'Interviewing'
+                        ? '🗣️'
+                        : col === 'Offer'
+                          ? '🎉'
+                          : '❌'}{' '}
+                  {col}
                 </span>
                 <span className="column-count">{colJobs.length}</span>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: 1, minHeight: '400px' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px',
+                  flex: 1,
+                  minHeight: '400px'
+                }}
+              >
                 {colJobs.length === 0 ? (
-                  <div style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', padding: '30px 10px', border: '1px dashed var(--border)', borderRadius: '10px' }}>
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      color: 'var(--text-muted)',
+                      fontSize: '0.8rem',
+                      padding: '30px 10px',
+                      border: '1px dashed var(--border)',
+                      borderRadius: '10px'
+                    }}
+                  >
                     Column Empty
                   </div>
                 ) : (
                   colJobs.map((job) => (
                     <article key={job.id} className="kanban-card">
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                        <h4 style={{ color: 'var(--text)', fontSize: '0.92rem' }}>{job.title}</h4>
-                        <button 
-                          type="button" 
-                          onClick={() => deleteJob(job.id)} 
-                          style={{ fontSize: '0.8rem', color: 'var(--danger)', opacity: 0.6 }}
-                          title="Remove application"
-                        >
-                          🗑️
-                        </button>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'flex-start',
+                          gap: '10px'
+                        }}
+                      >
+                        <div>
+                          <h4 style={{ color: 'var(--text)', fontSize: '0.92rem' }}>
+                            {job.title}
+                          </h4>
+                          <p
+                            style={{
+                              fontWeight: 600,
+                              color: 'var(--primary)',
+                              margin: '2px 0 6px',
+                              fontSize: '0.82rem'
+                            }}
+                          >
+                            {job.company}
+                          </p>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          <button
+                            type="button"
+                            onClick={() => openEditForm(job)}
+                            style={{
+                              fontSize: '0.78rem',
+                              color: 'var(--primary)',
+                              fontWeight: 700
+                            }}
+                            title="Edit application"
+                          >
+                            Edit
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => deleteJob(job.id)}
+                            style={{
+                              fontSize: '0.78rem',
+                              color: 'var(--danger)',
+                              fontWeight: 700
+                            }}
+                            title="Remove application"
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
-                      <p style={{ fontWeight: 600, color: 'var(--primary)', margin: '2px 0 6px', fontSize: '0.82rem' }}>
-                        {job.company}
-                      </p>
-                      
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          gap: '10px',
+                          fontSize: '0.75rem',
+                          color: 'var(--text-secondary)'
+                        }}
+                      >
                         <span>📍 {job.location}</span>
                         <span>💵 {job.salary}</span>
                       </div>
 
                       {job.dateApplied && (
-                        <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '8px' }}>
+                        <div
+                          style={{
+                            fontSize: '0.72rem',
+                            color: 'var(--text-muted)',
+                            marginTop: '8px'
+                          }}
+                        >
                           📅 Applied: {job.dateApplied}
                         </div>
                       )}
 
-                      {/* AI strategy prep card tag */}
+                      {job.notes && (
+                        <p style={{ fontSize: '0.78rem', marginTop: '8px', lineHeight: 1.45 }}>
+                          {job.notes}
+                        </p>
+                      )}
+
                       <button
                         type="button"
                         onClick={() => setSelectedStrategyJob(job)}
-                        style={{ 
-                          width: '100%', 
-                          marginTop: '12px', 
-                          padding: '6px', 
-                          background: 'linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(236, 72, 153, 0.05))',
+                        style={{
+                          width: '100%',
+                          marginTop: '12px',
+                          padding: '6px',
+                          background:
+                            'linear-gradient(135deg, rgba(56, 189, 248, 0.05), rgba(236, 72, 153, 0.05))',
                           border: '1px solid var(--border)',
                           borderRadius: '6px',
                           fontSize: '0.78rem',
@@ -216,24 +407,27 @@ export default function Jobs() {
                           textAlign: 'center'
                         }}
                       >
-                        ⚡ AI Strategy Guide
+                        AI Strategy Guide
                       </button>
 
-                      {/* Card movements buttons */}
                       <div className="kanban-card-footer" style={{ padding: '8px 0 0', marginTop: '8px' }}>
-                        <button 
-                          type="button" 
-                          className="btn-secondary" 
+                        <button
+                          type="button"
+                          className="btn-secondary"
                           style={{ padding: '2px 8px', fontSize: '0.75rem', borderRadius: '4px' }}
                           disabled={col === 'Wishlist'}
                           onClick={() => moveJob(job.id, 'left')}
                         >
                           ◀
                         </button>
-                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Move Status</span>
-                        <button 
-                          type="button" 
-                          className="btn-secondary" 
+
+                        <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                          Move Status
+                        </span>
+
+                        <button
+                          type="button"
+                          className="btn-secondary"
                           style={{ padding: '2px 8px', fontSize: '0.75rem', borderRadius: '4px' }}
                           disabled={col === 'Rejected'}
                           onClick={() => moveJob(job.id, 'right')}
@@ -250,44 +444,100 @@ export default function Jobs() {
         })}
       </div>
 
-      {/* Strategy Guide Modal popup */}
       {selectedStrategyJob && (
         <div className="modal-overlay" onClick={() => setSelectedStrategyJob(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ borderTop: '4px solid var(--primary)' }}>
-            <button type="button" className="modal-close" onClick={() => setSelectedStrategyJob(null)}>❌</button>
-            
-            <span className="status-badge success" style={{ marginBottom: '12px' }}>AI Interview Blueprint</span>
+          <div
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()}
+            style={{ borderTop: '4px solid var(--primary)' }}
+          >
+            <button type="button" className="modal-close" onClick={() => setSelectedStrategyJob(null)}>
+              ❌
+            </button>
+
+            <span className="status-badge success" style={{ marginBottom: '12px' }}>
+              AI Interview Blueprint
+            </span>
             <h2>{selectedStrategyJob.company} Interview Playbook</h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '24px' }}>
-              Specialized roadmap prep targeting your application for the <strong>{selectedStrategyJob.title}</strong> role.
+              Specialized roadmap prep targeting your application for the{' '}
+              <strong>{selectedStrategyJob.title}</strong> role.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <div>
-                <h4 style={{ color: 'var(--primary)', fontSize: '0.95rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
-                  🎯 Technical Core Focus
+                <h4
+                  style={{
+                    color: 'var(--primary)',
+                    fontSize: '0.95rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    marginBottom: '8px'
+                  }}
+                >
+                  Technical Core Focus
                 </h4>
-                <div style={{ background: 'var(--surface-alt)', padding: '12px 16px', borderRadius: '8px', fontWeight: 600, fontSize: '0.92rem' }}>
+                <div
+                  style={{
+                    background: 'var(--surface-alt)',
+                    padding: '12px 16px',
+                    borderRadius: '8px',
+                    fontWeight: 600,
+                    fontSize: '0.92rem'
+                  }}
+                >
                   {getCompanyStrategy(selectedStrategyJob).focus}
                 </div>
               </div>
 
               <div>
-                <h4 style={{ color: 'var(--secondary)', fontSize: '0.95rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>
-                  📝 Specialized Checklist
+                <h4
+                  style={{
+                    color: 'var(--secondary)',
+                    fontSize: '0.95rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    marginBottom: '8px'
+                  }}
+                >
+                  Specialized Checklist
                 </h4>
-                <ul style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '16px', listStyleType: 'disc' }}>
-                  {getCompanyStrategy(selectedStrategyJob).checklist.map((item, index) => (
-                    <li key={index} style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
+                <ul
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '8px',
+                    paddingLeft: '16px',
+                    listStyleType: 'disc'
+                  }}
+                >
+                  {getCompanyStrategy(selectedStrategyJob).checklist.map((item) => (
+                    <li
+                      key={item}
+                      style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}
+                    >
                       {item}
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div style={{ background: 'rgba(56, 189, 248, 0.03)', border: '1px dashed var(--border-hover)', padding: '16px', borderRadius: '10px' }}>
-                <h4 style={{ color: 'var(--accent-light)', fontSize: '0.9rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  💡 Insider Talent Tips
+              <div
+                style={{
+                  background: 'rgba(56, 189, 248, 0.03)',
+                  border: '1px dashed var(--border-hover)',
+                  padding: '16px',
+                  borderRadius: '10px'
+                }}
+              >
+                <h4
+                  style={{
+                    color: 'var(--accent-light)',
+                    fontSize: '0.9rem',
+                    marginBottom: '6px'
+                  }}
+                >
+                  Insider Talent Tips
                 </h4>
                 <p style={{ fontSize: '0.85rem', lineHeight: '1.5', margin: 0, fontStyle: 'italic' }}>
                   "{getCompanyStrategy(selectedStrategyJob).insiderTips}"
@@ -295,50 +545,53 @@ export default function Jobs() {
               </div>
             </div>
 
-            <button 
-              type="button" 
-              className="btn-primary" 
+            <button
+              type="button"
+              className="btn-primary"
               onClick={() => setSelectedStrategyJob(null)}
               style={{ width: '100%', marginTop: '24px', justifyContent: 'center' }}
             >
-              Acknowledged, Start Practicing! 🚀
+              Acknowledged, Start Practicing
             </button>
           </div>
         </div>
       )}
 
-      {/* Add Job Form Drawer Modal */}
-      {showAddForm && (
-        <div className="modal-overlay" onClick={() => setShowAddForm(false)}>
+      {showJobForm && (
+        <div className="modal-overlay" onClick={resetJobForm}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button type="button" className="modal-close" onClick={() => setShowAddForm(false)}>❌</button>
-            
-            <h2>Track New Opportunity</h2>
+            <button type="button" className="modal-close" onClick={resetJobForm}>
+              ❌
+            </button>
+
+            <h2>{editingJob ? 'Edit Opportunity' : 'Track New Opportunity'}</h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '24px' }}>
-              Add a new company job record to your active tracker pipeline columns.
+              {editingJob
+                ? 'Update company details, stage, date, and preparation notes.'
+                : 'Add a new company job record to your active tracker pipeline.'}
             </p>
 
-            <form onSubmit={handleAddJobSubmit}>
+            <form onSubmit={handleJobFormSubmit}>
               <div className="form-group">
                 <label>Job Title*</label>
-                <input 
-                  type="text" 
-                  className="form-input" 
+                <input
+                  type="text"
+                  className="form-input"
                   placeholder="e.g. Backend Software Intern"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
+                  value={jobForm.title}
+                  onChange={(e) => updateJobForm('title', e.target.value)}
                   required
                 />
               </div>
 
               <div className="form-group">
                 <label>Company*</label>
-                <input 
-                  type="text" 
-                  className="form-input" 
+                <input
+                  type="text"
+                  className="form-input"
                   placeholder="e.g. Stripe or Google"
-                  value={newCompany}
-                  onChange={(e) => setNewCompany(e.target.value)}
+                  value={jobForm.company}
+                  onChange={(e) => updateJobForm('company', e.target.value)}
                   required
                 />
               </div>
@@ -346,59 +599,77 @@ export default function Jobs() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
                 <div className="form-group">
                   <label>Location</label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
+                  <input
+                    type="text"
+                    className="form-input"
                     placeholder="e.g. Remote or NYC"
-                    value={newLocation}
-                    onChange={(e) => setNewLocation(e.target.value)}
+                    value={jobForm.location}
+                    onChange={(e) => updateJobForm('location', e.target.value)}
                   />
                 </div>
 
                 <div className="form-group">
                   <label>Salary Package</label>
-                  <input 
-                    type="text" 
-                    className="form-input" 
+                  <input
+                    type="text"
+                    className="form-input"
                     placeholder="e.g. $120k/yr or $45/hr"
-                    value={newSalary}
-                    onChange={(e) => setNewSalary(e.target.value)}
+                    value={jobForm.salary}
+                    onChange={(e) => updateJobForm('salary', e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+                <div className="form-group">
+                  <label>Application Stage</label>
+                  <select
+                    className="form-select"
+                    value={jobForm.status}
+                    onChange={(e) => updateJobForm('status', e.target.value as JobItem['status'])}
+                  >
+                    <option value="Wishlist">Wishlist / Bookmarked</option>
+                    <option value="Applied">Applied</option>
+                    <option value="Interviewing">Interviewing</option>
+                    <option value="Offer">Offer Received</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>Date Applied</label>
+                  <input
+                    type="date"
+                    className="form-input"
+                    value={jobForm.dateApplied}
+                    onChange={(e) => updateJobForm('dateApplied', e.target.value)}
                   />
                 </div>
               </div>
 
               <div className="form-group">
-                <label>Application Stage Category</label>
-                <select 
-                  className="form-select"
-                  value={newStatus}
-                  onChange={(e) => setNewStatus(e.target.value as any)}
-                >
-                  <option value="Wishlist">📌 Wishlist / Bookmarked</option>
-                  <option value="Applied">📥 Applied</option>
-                  <option value="Interviewing">🗣️ Interviewing</option>
-                  <option value="Offer">🎉 Offer Received</option>
-                  <option value="Rejected">❌ Rejected</option>
-                </select>
-              </div>
-
-              <div className="form-group">
                 <label>Developer Research Notes</label>
-                <textarea 
-                  className="textarea-box" 
+                <textarea
+                  className="textarea-box"
                   style={{ minHeight: '80px' }}
                   placeholder="Insert referral contact names, follow-up dates, or specialized skill stacks."
-                  value={newNotes}
-                  onChange={(e) => setNewNotes(e.target.value)}
+                  value={jobForm.notes}
+                  onChange={(e) => updateJobForm('notes', e.target.value)}
                 />
               </div>
 
               <div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}>
-                <button type="button" className="btn-secondary" style={{ flex: 1, justifyContent: 'center' }} onClick={() => setShowAddForm(false)}>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  style={{ flex: 1, justifyContent: 'center' }}
+                  onClick={resetJobForm}
+                >
                   Cancel
                 </button>
+
                 <button type="submit" className="btn-primary" style={{ flex: 1, justifyContent: 'center' }}>
-                  Add to Columns 📥
+                  {editingJob ? 'Save Changes' : 'Add to Columns'}
                 </button>
               </div>
             </form>

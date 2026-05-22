@@ -7,6 +7,8 @@ import Interview from '../pages/Interview';
 import Jobs from '../pages/Jobs';
 import Roadmap from '../pages/Roadmap';
 import CodingSandbox from '../pages/CodingSandbox';
+import Login from '../pages/Login';
+import Signup from '../pages/Signup';
 import Layout from '../components/Layout';
 
 export default function AppRoutes() {
@@ -21,6 +23,8 @@ export default function AppRoutes() {
         <Route path="roadmap" element={<Roadmap />} />
         <Route path="sandbox" element={<CodingSandbox />} />
         <Route path="about" element={<About />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
