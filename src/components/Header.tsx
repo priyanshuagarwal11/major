@@ -1,66 +1,102 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useAuthContext } from '../context/AuthContext';
-
-const navItems = [
-  { path: '/', label: 'Home' },
-  { path: '/career', label: 'Career Hub' },
-  { path: '/resume', label: 'Resume' },
-  { path: '/interview', label: 'Interview' },
-  { path: '/jobs', label: 'Job Tracker' },
-  { path: '/roadmap', label: 'Roadmap' },
-  { path: '/sandbox', label: 'Coding Sandbox' },
-  { path: '/about', label: 'About' }
-];
 
 export default function Header() {
   const { theme, toggleTheme, resumeScore } = useAppContext();
   const { user, isAuthenticated, logout } = useAuthContext();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isLandingPage = location.pathname === '/';
+
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      const headerOffset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
     <header className="header-shell">
       <Link to="/" className="brand" aria-label="AI Career Copilot home">
-        <div className="brand-logo">
-          <span>AI</span>
+        <div className="logo-icon">
+          <span>Ω</span>
         </div>
 
         <div className="brand-text">
-          <strong>Career Copilot</strong>
-          <span>AI placement assistant</span>
+          <strong>AI Career Copilot</strong>
+          <span>AI Placement Suite</span>
         </div>
       </Link>
 
       <nav className="nav-links" aria-label="Main navigation">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) => (isActive ? 'active' : '')}
-          >
-            {item.label}
-          </NavLink>
-        ))}
+        {isLandingPage ? (
+          <>
+            <a href="#features" onClick={(e) => handleAnchorClick(e, 'features')}>Features</a>
+            <a href="#ai-systems" onClick={(e) => handleAnchorClick(e, 'ai-systems')}>AI Architecture</a>
+            <a href="#chat-preview" onClick={(e) => handleAnchorClick(e, 'chat-preview')}>AI Mentor</a>
+            <a href="#pricing" onClick={(e) => handleAnchorClick(e, 'pricing')}>Pricing</a>
+            <a href="#testimonials" onClick={(e) => handleAnchorClick(e, 'testimonials')}>Testimonials</a>
+          </>
+        ) : (
+          <>
+            <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')}>Home</NavLink>
+            <NavLink to="/career" className={({ isActive }) => (isActive ? 'active' : '')}>Career Hub</NavLink>
+            <NavLink to="/resume" className={({ isActive }) => (isActive ? 'active' : '')}>Resume</NavLink>
+            <NavLink to="/interview" className={({ isActive }) => (isActive ? 'active' : '')}>Interview</NavLink>
+            <NavLink to="/jobs" className={({ isActive }) => (isActive ? 'active' : '')}>Job Tracker</NavLink>
+            <NavLink to="/roadmap" className={({ isActive }) => (isActive ? 'active' : '')}>Roadmap</NavLink>
+            <NavLink to="/sandbox" className={({ isActive }) => (isActive ? 'active' : '')}>Sandbox</NavLink>
+          </>
+        )}
       </nav>
 
-      <div className="header-actions">
-        <div className="score-pill" title="Dynamic Resume Alignment Score">
-          <span>Score</span>
-          <strong>{resumeScore}%</strong>
-        </div>
+      <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        {!isLandingPage && (
+          <div className="score-pill" title="Dynamic Resume Alignment Score" style={{
+            background: 'rgba(56, 189, 248, 0.1)',
+            border: '1px solid rgba(56, 189, 248, 0.2)',
+            padding: '4px 12px',
+            borderRadius: '9999px',
+            fontSize: '0.8rem',
+            color: 'var(--primary)',
+            display: 'flex',
+            gap: '6px'
+          }}>
+            <span>ATS Score:</span>
+            <strong>{resumeScore}%</strong>
+          </div>
+        )}
 
         {isAuthenticated ? (
-          <div className="auth-actions">
-            <span className="user-chip">Hi, {user?.name}</span>
-            <button type="button" className="btn-secondary header-btn" onClick={logout}>
+          <div className="auth-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Link to="/career" className="btn-saas-outline-glow" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>
+              Launch App 🚀
+            </Link>
+            <button 
+              type="button" 
+              className="btn-secondary" 
+              onClick={logout}
+              style={{ padding: '8px 16px', fontSize: '0.85rem', background: 'transparent', border: 'none' }}
+            >
               Logout
             </button>
           </div>
         ) : (
-          <div className="auth-actions">
-            <Link to="/login" className="btn-secondary header-btn">
+          <div className="auth-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <Link to="/login" className="btn-saas-outline-glow" style={{ padding: '8px 18px', fontSize: '0.85rem' }}>
               Login
             </Link>
-            <Link to="/signup" className="btn-primary header-btn">
+            <Link to="/signup" className="btn-saas-gradient" style={{ padding: '8px 18px', fontSize: '0.85rem' }}>
               Sign up
             </Link>
           </div>
@@ -72,10 +108,16 @@ export default function Header() {
           onClick={toggleTheme}
           aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
           title={theme === 'dark' ? 'Dark theme active' : 'Light theme active'}
+          style={{
+            background: 'rgba(255,255,255,0.05)',
+            border: '1px solid var(--border)',
+            padding: '6px 10px',
+            borderRadius: '9999px',
+            cursor: 'pointer',
+            fontSize: '0.9rem'
+          }}
         >
-          <span className="theme-toggle-track">
-            <span className="theme-toggle-thumb">{theme === 'dark' ? '🌙' : '☀️'}</span>
-          </span>
+          {theme === 'dark' ? '🌙' : '☀️'}
         </button>
       </div>
     </header>
