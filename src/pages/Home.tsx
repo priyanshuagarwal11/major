@@ -344,24 +344,22 @@ export default function Home() {
           ✨ THE NEXT-GEN AI PLACEMENT COMPASS
         </span>
 
-        <h1 style={{
-          fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)',
-          fontWeight: 900,
-          lineHeight: 1.05,
-          letterSpacing: '-0.04em',
-          maxWidth: '1000px',
-          margin: '0 auto 20px',
-          background: 'linear-gradient(135deg, #ffffff 30%, #e2e8f0 70%, #94a3b8 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        }}>
-          Your Personal AI Career Mentor for <br/>
-          <span style={{
-            background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            position: 'relative'
-          }}>
+        <h1
+          className="landing-hero-title"
+          style={{
+            fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)',
+            fontWeight: 900,
+            lineHeight: 1.05,
+            letterSpacing: '-0.04em',
+            maxWidth: '1000px',
+            margin: '0 auto 20px'
+          }}
+        >
+          <span className="landing-hero-title-soft">
+            Your Personal AI Career Mentor for
+          </span>
+          <br />
+          <span className="landing-hero-title-gradient">
             Placements & Dream Jobs.
           </span>
         </h1>
@@ -409,7 +407,7 @@ export default function Home() {
           width: '100%',
           maxWidth: '960px',
           margin: '0 auto 64px',
-          background: 'rgba(16, 23, 38, 0.4)',
+          background: 'var(--surface)',
           border: '1px solid var(--border)',
           borderRadius: 'var(--radius-lg)',
           padding: '24px',
@@ -722,7 +720,7 @@ export default function Home() {
       </section>
 
       {/* 3. ADVANCED AI SYSTEMS NETWORK DIAGRAM */}
-      <section id="ai-systems" style={{ padding: '80px 24px', background: 'rgba(3, 7, 18, 0.4)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', position: 'relative', zIndex: 10 }}>
+      <section id="ai-systems" style={{ padding: '80px 24px', background: 'var(--surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', position: 'relative', zIndex: 10 }}>
         
         <div style={{ textAlign: 'center', marginBottom: '56px' }}>
           <span className="status-badge primary" style={{ marginBottom: '12px' }}>
@@ -1450,7 +1448,7 @@ export default function Home() {
       )}
 
       {/* 9. FOOTER SECTION */}
-      <footer className="footer-shell" style={{ marginTop: '80px', borderTop: '1px solid var(--border)', background: 'rgba(3, 7, 18, 0.95)', position: 'relative', zIndex: 10 }}>
+      <footer className="footer-shell" style={{ marginTop: '80px', borderTop: '1px solid var(--border)', background: 'var(--surface)', position: 'relative', zIndex: 10 }}>
         <div className="footer-grid-saas" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 0 20px', textAlign: 'left' }}>
           
           {/* Col 1 */}
