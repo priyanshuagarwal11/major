@@ -2,6 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useAuthContext } from '../context/AuthContext';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  FileText, Mic, Target, Map, Terminal, FolderCheck, CheckCircle2, 
+  XCircle, Sparkles, Chrome, Github, Eye, EyeOff, AlertCircle, 
+  ArrowRight, Menu, X, Star, ChevronLeft, ChevronRight, Mail, Lock, User, Zap, ShieldCheck, Compass
+} from 'lucide-react';
 
 interface Message {
   sender: 'user' | 'assistant';
@@ -270,11 +276,11 @@ export default function Home() {
   const getRadarPoints = () => {
     switch (targetRole) {
       case 'backend':
-        return "150,50 230,120 200,210 100,210 70,120"; // Weighted heavily towards system design / algorithms
+        return "150,50 230,120 200,210 100,210 70,120";
       case 'frontend':
-        return "150,90 240,110 180,220 120,200 60,140"; // Weighted towards UI layout / optimization
+        return "150,90 240,110 180,220 120,200 60,140";
       case 'ai':
-        return "150,30 210,130 220,190 80,190 90,130"; // Heavy algos, data systems, and system design
+        return "150,30 210,130 220,190 80,190 90,130";
     }
   };
 
@@ -316,560 +322,457 @@ export default function Home() {
   };
 
   return (
-    <div className="landing-shell" style={{ position: 'relative', overflowX: 'hidden' }}>
+    <div className="min-h-screen bg-[#030712] text-slate-100 relative overflow-hidden font-sans select-none">
       
-      {/* Visual background decorations */}
-      <div className="saas-grid-bg"></div>
-      <div className="glowing-orb orb-primary"></div>
-      <div className="glowing-orb orb-secondary"></div>
-      <div className="glowing-orb orb-cyan"></div>
+      {/* Background grids & custom radial glow gradients */}
+      <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(rgba(255,255,255,0.005)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.005)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0" />
+      <div className="absolute top-[-100px] left-[-100px] w-[600px] h-[600px] rounded-full bg-sky-500/10 blur-[130px] pointer-events-none z-0" />
+      <div className="absolute bottom-[-100px] right-[-100px] w-[650px] h-[650px] rounded-full bg-purple-500/10 blur-[140px] pointer-events-none z-0" />
+      <div className="absolute top-[40%] left-[25%] w-[400px] h-[400px] rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none" />
 
-      {/* 1. HERO SECTION */}
-      <section className="hero-section" style={{
-        padding: '80px 0 60px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        textAlign: 'center',
-        position: 'relative',
-        zIndex: 10
-      }}>
-        
-        <span className="status-badge primary" style={{
-          marginBottom: '20px',
-          animation: 'pulse-ring-glow 2s infinite alternate',
-          letterSpacing: '0.08em',
-          fontWeight: 700
-        }}>
-          ✨ THE NEXT-GEN AI PLACEMENT COMPASS
-        </span>
-
-        <h1
-          className="landing-hero-title"
-          style={{
-            fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)',
-            fontWeight: 900,
-            lineHeight: 1.05,
-            letterSpacing: '-0.04em',
-            maxWidth: '1000px',
-            margin: '0 auto 20px'
-          }}
+      {/* SECTION 2 — HERO SECTION */}
+      <section className="relative z-10 max-w-[1100px] mx-auto text-center px-6 pt-24 pb-16">
+        <motion.span 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] uppercase font-bold tracking-widest text-sky-400 bg-sky-500/10 rounded-full border border-sky-500/10 mb-6"
         >
-          <span className="landing-hero-title-soft">
-            Your Personal AI Career Mentor for
-          </span>
-          <br />
-          <span className="landing-hero-title-gradient">
-            Placements & Dream Jobs.
-          </span>
-        </h1>
+          <Sparkles className="w-3.5 h-3.5" /> Next-Gen AI Placement Compass
+        </motion.span>
 
-        <p style={{
-          fontSize: 'clamp(1.05rem, 2vw, 1.25rem)',
-          color: 'var(--text-secondary)',
-          lineHeight: '1.6',
-          maxWidth: '780px',
-          margin: '0 auto 36px',
-        }}>
-          Upload your resume for real-time ATS optimization, simulate authentic voice interviews with generative metrics, map custom skill-roadmaps, practice in our compiled IDE, and secure offers.
-        </p>
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.05] bg-gradient-to-b from-white via-slate-100 to-slate-400 bg-clip-text text-transparent max-w-4xl mx-auto mb-6"
+        >
+          Your Personal AI Career Mentor <br/>
+          <span className="bg-gradient-to-r from-sky-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
+            Powered by AI.
+          </span>
+        </motion.h1>
 
-        <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '16px',
-          justifyContent: 'center',
-          marginBottom: '56px'
-        }}>
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-slate-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-10"
+        >
+          Build ATS-friendly resumes, crack interviews, track jobs, practice coding, and become industry-ready with AI.
+        </motion.p>
+
+        {/* CTA buttons */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex flex-wrap gap-4 justify-center mb-16"
+        >
           {isAuthenticated ? (
-            <Link to="/career" className="btn-saas-gradient" style={{ padding: '14px 36px', fontSize: '1rem' }}>
-              Enter Career Workspace 🚀
+            <Link to="/career" className="bg-gradient-to-r from-sky-400 via-purple-500 to-indigo-500 hover:from-sky-500 hover:via-purple-600 hover:to-indigo-600 text-white font-bold text-sm px-8 py-4 rounded-xl shadow-lg hover:shadow-sky-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+              Go to Dashboard 🚀
             </Link>
           ) : (
-            <button 
-              onClick={() => triggerAuthFromPlan('signup')} 
-              className="btn-saas-gradient" 
-              style={{ padding: '14px 36px', fontSize: '1rem' }}
-            >
+            <button onClick={() => triggerAuthFromPlan('signup')} className="bg-gradient-to-r from-sky-400 via-purple-500 to-indigo-500 hover:from-sky-500 hover:via-purple-600 hover:to-indigo-600 text-white font-bold text-sm px-8 py-4 rounded-xl shadow-lg hover:shadow-sky-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
               Get Started Free
             </button>
           )}
-          <a href="#chat-preview" className="btn-saas-outline-glow" style={{ padding: '14px 36px', fontSize: '1rem' }}>
-            Try Live Chat Preview
-          </a>
-        </div>
+          <button onClick={handleStartResumeScan} className="text-slate-300 hover:text-white bg-slate-900/60 border border-slate-800/80 hover:border-slate-700/80 font-bold text-sm px-8 py-4 rounded-xl transition-all">
+            Watch Scanner Demo 🧪
+          </button>
+        </motion.div>
 
-        {/* Live Counter Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-          gap: '24px',
-          width: '100%',
-          maxWidth: '960px',
-          margin: '0 auto 64px',
-          background: 'var(--surface)',
-          border: '1px solid var(--border)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '24px',
-          backdropFilter: 'blur(10px)'
-        }}>
-          <div style={{ padding: '10px' }}>
-            <h4 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary)' }}>50,000+</h4>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Students Placed</p>
+        {/* Stats Counter Section */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-slate-950/40 border border-slate-800/60 backdrop-blur-sm p-6 rounded-2xl max-w-4xl mx-auto mb-20 shadow-2xl"
+        >
+          <div className="p-2 border-r border-slate-800/40">
+            <h4 className="text-2xl md:text-3xl font-extrabold text-sky-400">50K+</h4>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">Students Placed</p>
           </div>
-          <div style={{ padding: '10px', borderLeft: '1px solid var(--border)' }}>
-            <h4 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--secondary)' }}>95.4%</h4>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>ATS Match Rate</p>
+          <div className="p-2 md:border-r border-slate-800/40">
+            <h4 className="text-2xl md:text-3xl font-extrabold text-purple-400">10K+</h4>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">AI Interviews</p>
           </div>
-          <div style={{ padding: '10px', borderLeft: '1px solid var(--border)' }}>
-            <h4 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--accent-light)' }}>12,000+</h4>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Interviews Hosted</p>
+          <div className="p-2 border-r border-slate-800/40">
+            <h4 className="text-2xl md:text-3xl font-extrabold text-emerald-400">95%</h4>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">ATS Accuracy</p>
           </div>
-          <div style={{ padding: '10px', borderLeft: '1px solid var(--border)' }}>
-            <h4 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--warning)' }}>4.92 / 5</h4>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Placement Score</p>
+          <div className="p-2">
+            <h4 className="text-2xl md:text-3xl font-extrabold text-warning">4.9/5</h4>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">User Rating</p>
           </div>
-        </div>
+        </motion.div>
 
-        {/* HIGH-FIDELITY INTERACTIVE DASHBOARD MOCKUP */}
-        <div style={{ width: '100%', maxWidth: '1100px', margin: '0 auto' }}>
-          <div className="mockup-browser">
-            <div className="mockup-browser-header">
-              <span className="mockup-dot red"></span>
-              <span className="mockup-dot yellow"></span>
-              <span className="mockup-dot green"></span>
-              <div className="mockup-browser-url">copilot.ai/dashboard/alignment-metrics</div>
+        {/* Hero Visual Mockup */}
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="w-full max-w-5xl mx-auto rounded-3xl border border-slate-800/80 bg-slate-950/80 p-1.5 shadow-2xl relative overflow-hidden"
+        >
+          <div className="bg-[#030712] rounded-2xl overflow-hidden border border-slate-900">
+            
+            {/* Header circles */}
+            <div className="bg-[#090d16] border-b border-slate-900 py-3.5 px-6 flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-red-500/80" />
+              <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
+              <span className="w-3 h-3 rounded-full bg-emerald-500/80" />
+              <div className="mx-auto bg-slate-950/60 border border-slate-850 px-8 py-1 rounded-lg text-[10px] font-mono text-slate-500">
+                copilot.ai/dashboard/placement-suite
+              </div>
             </div>
 
-            <div style={{ padding: '24px', background: 'rgba(9, 13, 22, 0.95)', display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '24px', textAlign: 'left' }}>
+            {/* Split layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6 text-left">
               
-              {/* Left Side: ATS Scanner Simulator */}
-              <div className="col-6" style={{ background: 'rgba(16, 23, 38, 0.6)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '20px', position: 'relative' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: 'var(--primary)' }}>📝</span> AI ATS Resume Alignment Scanner
-                  </h3>
-                  <span className="status-badge success">{selectedResumeFile ? 'Active PDF' : 'Ready'}</span>
+              {/* Left Mockup: ATS Parser scanner */}
+              <div className="lg:col-span-6 bg-slate-900/30 border border-slate-800 p-6 rounded-2xl relative overflow-hidden flex flex-col justify-between min-h-[280px]">
+                {isScanning && <div className="absolute top-0 left-0 w-full h-[4px] bg-gradient-to-r from-transparent via-sky-400 to-transparent shadow-[0_0_12px_#38bdf8] animate-[scan_2.5s_infinite_linear]" />}
+                
+                <div className="flex justify-between items-center mb-4">
+                  <h4 className="text-xs font-bold text-slate-300 flex items-center gap-2">
+                    <span className="text-sky-400">📄</span> ATS Placement Analysis
+                  </h4>
+                  <span className="text-[10px] uppercase font-bold tracking-widest text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded-full border border-sky-500/10">
+                    {selectedResumeFile ? 'Active file' : 'Ready'}
+                  </span>
                 </div>
 
-                <div style={{
-                  height: '180px',
-                  background: 'rgba(3, 7, 18, 0.8)',
-                  borderRadius: 'var(--radius-sm)',
-                  padding: '16px',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.75rem',
-                  color: 'var(--text-secondary)',
-                  overflowY: 'auto',
-                  border: '1px solid rgba(255,255,255,0.05)',
-                  position: 'relative'
-                }}>
-                  {isScanning && <div className="scanner-beam"></div>}
+                <div className="flex-1 bg-slate-950/80 border border-slate-900/50 rounded-xl p-4 font-mono text-[10px] text-slate-400 h-[150px] overflow-y-auto space-y-2">
                   {scannerLogs.map((log, idx) => (
-                    <div key={idx} style={{ marginBottom: '6px', color: log.startsWith('✅') ? 'var(--accent-light)' : log.startsWith('💡') ? 'var(--warning)' : 'inherit' }}>
+                    <div key={idx} className={log.startsWith('✅') ? 'text-emerald-400' : log.startsWith('💡') ? 'text-warning' : ''}>
                       {log}
                     </div>
                   ))}
                 </div>
 
-                <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div className="mt-4 flex items-center justify-between gap-4">
                   <button 
                     onClick={handleStartResumeScan}
                     disabled={isScanning}
-                    className="btn-saas-outline-glow" 
-                    style={{ padding: '8px 16px', fontSize: '0.8rem', opacity: isScanning ? 0.6 : 1 }}
+                    className="text-[10px] font-extrabold bg-sky-500 hover:bg-sky-400 text-slate-950 px-4 py-2.5 rounded-lg active:scale-95 transition-all disabled:opacity-60"
                   >
-                    {isScanning ? `Scanning (${scanProgress}%)` : 'Start AI Scan Simulation'}
+                    {isScanning ? `Extracting (${scanProgress}%)` : 'Run Scan Simulation'}
                   </button>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                    File: <strong style={{ color: 'var(--text)' }}>{selectedResumeFile || 'None loaded'}</strong>
+                  <span className="text-[10px] text-slate-500">
+                    Target: <strong className="text-slate-300">{selectedResumeFile || 'No file selected'}</strong>
                   </span>
                 </div>
               </div>
 
-              {/* Right Side: Interactive Competency Radar & Active stats */}
-              <div className="col-6" style={{ background: 'rgba(16, 23, 38, 0.6)', border: '1px solid var(--border)', borderRadius: 'var(--radius)', padding: '20px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>📊 Competency Target Analysis</h3>
-                  <div style={{ display: 'flex', gap: '6px' }}>
-                    <button 
-                      onClick={() => setTargetRole('backend')}
-                      style={{
-                        padding: '4px 8px',
-                        fontSize: '0.7rem',
-                        borderRadius: '4px',
-                        background: targetRole === 'backend' ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
-                        color: targetRole === 'backend' ? '#000' : '#fff',
-                        fontWeight: 700
-                      }}
-                    >
-                      Backend
-                    </button>
-                    <button 
-                      onClick={() => setTargetRole('frontend')}
-                      style={{
-                        padding: '4px 8px',
-                        fontSize: '0.7rem',
-                        borderRadius: '4px',
-                        background: targetRole === 'frontend' ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
-                        color: targetRole === 'frontend' ? '#000' : '#fff',
-                        fontWeight: 700
-                      }}
-                    >
-                      Frontend
-                    </button>
-                    <button 
-                      onClick={() => setTargetRole('ai')}
-                      style={{
-                        padding: '4px 8px',
-                        fontSize: '0.7rem',
-                        borderRadius: '4px',
-                        background: targetRole === 'ai' ? 'var(--primary)' : 'rgba(255,255,255,0.05)',
-                        color: targetRole === 'ai' ? '#000' : '#fff',
-                        fontWeight: 700
-                      }}
-                    >
-                      AI/LLM
-                    </button>
+              {/* Right Mockup: SVG Competency Pentagon */}
+              <div className="lg:col-span-6 bg-slate-900/30 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between min-h-[280px]">
+                <div className="flex justify-between items-center mb-4">
+                  <h4 className="text-xs font-bold text-slate-300">📊 Role Target Competency</h4>
+                  <div className="flex gap-1.5">
+                    <button onClick={() => setTargetRole('backend')} className={`px-2.5 py-1 text-[9px] rounded font-bold transition-all ${targetRole === 'backend' ? 'bg-sky-500 text-slate-950' : 'bg-slate-950/60 text-slate-400'}`}>Backend</button>
+                    <button onClick={() => setTargetRole('frontend')} className={`px-2.5 py-1 text-[9px] rounded font-bold transition-all ${targetRole === 'frontend' ? 'bg-sky-500 text-slate-950' : 'bg-slate-950/60 text-slate-400'}`}>Frontend</button>
+                    <button onClick={() => setTargetRole('ai')} className={`px-2.5 py-1 text-[9px] rounded font-bold transition-all ${targetRole === 'ai' ? 'bg-sky-500 text-slate-950' : 'bg-slate-950/60 text-slate-400'}`}>AI/LLM</button>
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px', height: '200px' }}>
-                  
-                  {/* Interactive SVG Radar Drawing */}
-                  <svg width="220" height="200" style={{ overflow: 'visible' }}>
-                    {/* Background pentagon rings */}
-                    <polygon points="150,20 250,90 210,200 90,200 50,90" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-                    <polygon points="150,50 220,100 190,170 110,170 80,100" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-                    <polygon points="150,80 190,110 170,140 130,140 110,110" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" />
+                <div className="flex items-center gap-6 justify-center">
+                  <svg width="180" height="150" className="overflow-visible">
+                    <polygon points="90,15 160,65 130,135 50,135 20,65" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+                    <polygon points="90,45 135,75 115,115 65,115 45,75" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+                    <line x1="90" y1="80" x2="90" y2="15" stroke="rgba(255,255,255,0.08)" />
+                    <line x1="90" y1="80" x2="160" y2="65" stroke="rgba(255,255,255,0.08)" />
+                    <line x1="90" y1="80" x2="130" y2="135" stroke="rgba(255,255,255,0.08)" />
+                    <line x1="90" y1="80" x2="50" y2="135" stroke="rgba(255,255,255,0.08)" />
+                    <line x1="90" y1="80" x2="20" y2="65" stroke="rgba(255,255,255,0.08)" />
 
-                    {/* Central connecting axes lines */}
-                    <line x1="150" y1="110" x2="150" y2="20" stroke="rgba(255,255,255,0.1)" />
-                    <line x1="150" y1="110" x2="250" y2="90" stroke="rgba(255,255,255,0.1)" />
-                    <line x1="150" y1="110" x2="210" y2="200" stroke="rgba(255,255,255,0.1)" />
-                    <line x1="150" y1="110" x2="90" y2="200" stroke="rgba(255,255,255,0.1)" />
-                    <line x1="150" y1="110" x2="50" y2="90" stroke="rgba(255,255,255,0.1)" />
-
-                    {/* Axis Labels */}
-                    <text x="150" y="12" fill="var(--text-secondary)" fontSize="8" textAnchor="middle">ATS MATCH</text>
-                    <text x="260" y="94" fill="var(--text-secondary)" fontSize="8" textAnchor="start">SYSTEMS</text>
-                    <text x="215" y="212" fill="var(--text-secondary)" fontSize="8" textAnchor="start">BEHAVIORAL</text>
-                    <text x="85" y="212" fill="var(--text-secondary)" fontSize="8" textAnchor="end">ALGORITHMS</text>
-                    <text x="40" y="94" fill="var(--text-secondary)" fontSize="8" textAnchor="end">UI DENSITY</text>
-
-                    {/* Colored Active Polygon Area with Glow transitions */}
+                    {/* Pentagon coordinate points */}
                     <polygon 
                       points={getRadarPoints()} 
                       fill="rgba(56, 189, 248, 0.25)" 
                       stroke="var(--primary)" 
-                      strokeWidth="2" 
-                      style={{ transition: 'all 0.5s ease' }} 
+                      strokeWidth="1.5" 
+                      style={{ transition: 'all 0.4s ease' }} 
                     />
-                    
-                    {/* Glowing coordinate nodes */}
-                    {getRadarPoints().split(' ').map((point, index) => {
-                      const [x, y] = point.split(',');
-                      return (
-                        <circle 
-                          key={index}
-                          cx={x} 
-                          cy={y} 
-                          r="4" 
-                          fill="var(--secondary)" 
-                          stroke="#fff" 
-                          strokeWidth="1"
-                          style={{ transition: 'all 0.5s ease', filter: 'drop-shadow(0 0 4px var(--secondary))' }}
-                        />
-                      );
-                    })}
                   </svg>
 
-                  {/* Competency detail feedback card */}
-                  <div style={{ flex: 1, fontSize: '0.8rem', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <div style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '6px' }}>
-                      <span style={{ color: 'var(--text-secondary)' }}>Focus Role:</span>
-                      <div style={{ fontWeight: 700, textTransform: 'capitalize', color: 'var(--primary)' }}>
-                        {targetRole} Engineering
-                      </div>
+                  <div className="flex-1 space-y-4 text-xs">
+                    <div>
+                      <span className="text-[10px] text-slate-500 block">Focus Track:</span>
+                      <strong className="text-sky-400 capitalize">{targetRole} Development</strong>
                     </div>
                     <div>
-                      <span style={{ color: 'var(--text-secondary)' }}>Current Alignment:</span>
-                      <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text)' }}>
-                        {targetRole === 'backend' ? '86% (Strong)' : targetRole === 'frontend' ? '91% (Ready)' : '78% (Growing)'}
-                      </div>
+                      <span className="text-[10px] text-slate-500 block">Placement Match:</span>
+                      <strong className="text-white text-sm">{targetRole === 'backend' ? '86% (Strong)' : targetRole === 'frontend' ? '91% (Ready)' : '78% (Growing)'}</strong>
                     </div>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.72rem', lineHeight: 1.4 }}>
-                      {targetRole === 'backend' && 'Highly aligned in databases and APIs. Missing production container tools.'}
-                      {targetRole === 'frontend' && 'Stunning UI composition scores. Suggest adding Webpack configuration metrics.'}
-                      {targetRole === 'ai' && 'Solid neural structure knowledge. Needs additional system deployment experience.'}
-                    </p>
                   </div>
-
                 </div>
-
               </div>
 
             </div>
           </div>
-        </div>
-
+        </motion.div>
       </section>
 
-      {/* 2. CORE FEATURES GRID */}
-      <section id="features" style={{ padding: '80px 24px', position: 'relative', zIndex: 10 }}>
-        
-        <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-          <span className="status-badge success" style={{ marginBottom: '12px' }}>
-            🛠️ COMPLETE PREPARATION MODULES
+      {/* SECTION 3 — FEATURES SECTION */}
+      <section id="features" className="relative z-10 max-w-[1200px] mx-auto px-6 py-24 border-t border-slate-900">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 rounded-full border border-emerald-500/10 uppercase tracking-widest">
+            Capabilities
           </span>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.03em' }}>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-4">
             Engineered to Close Every Skill Gap
           </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', maxWidth: '640px', margin: '8px auto 0' }}>
-            Stop juggling multiple platform subscriptions. AI Career Copilot consolidates the complete recruitment pipeline under one beautiful, automated interface.
+          <p className="text-slate-400 text-sm mt-3">
+            Consolidate your entire job preparation funnel under a single automated, intelligence-driven, and highly-refined SaaS workspace.
           </p>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '24px',
-          maxWidth: '1200px',
-          margin: '0 auto'
-        }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           
-          {/* Card 1: Resume Optimizer */}
-          <article className="dashboard-card" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div style={{ fontSize: '2rem' }}>📝</div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>ATS Resume Optimizer</h3>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-              Submit your CV for high-fidelity scanning. Our systems score formatting, key densities, and phrasing syntax against raw industry standards, generating instant line-by-line rewrite suggestions.
-            </p>
-            <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border)', paddingTop: '12px' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 600 }}>Active Scorecard Integration</span>
-              <span className="status-badge success">Match verified</span>
+          {/* Card 1: Resume Analyzer */}
+          <motion.article 
+            whileHover={{ y: -6 }}
+            className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-sky-500/30 hover:shadow-glow transition-all"
+          >
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-xl">
+                📄
+              </div>
+              <h3 className="text-lg font-bold text-white">AI Resume Analyzer</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Scan layouts, identify keyword densities, and optimize phrasing structures against real recruiting filters.
+              </p>
             </div>
-          </article>
+            <div className="mt-8 pt-4 border-t border-slate-800/40 flex justify-between items-center text-[10px] font-semibold text-sky-400">
+              <span>Google X-Y-Z Optimizer</span>
+              <span>Verified ➔</span>
+            </div>
+          </motion.article>
 
-          {/* Card 2: AI Voice Interviewer */}
-          <article className="dashboard-card" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div style={{ fontSize: '2rem' }}>🗣️</div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>AI Voice Mock Evaluator</h3>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-              Simulate actual recruiters in realistic, voice-streamed mock loops. Practice technical, behavioral, or system scaling evaluations and receive instant transcript markers with sentiment metrics.
-            </p>
-            <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border)', paddingTop: '12px' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--secondary)', fontWeight: 600 }}>Audio Streaming Engine</span>
-              <span className="status-badge primary">Voice & Chat</span>
+          {/* Card 2: Interview Room */}
+          <motion.article 
+            whileHover={{ y: -6 }}
+            className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-purple-500/30 hover:shadow-[0_0_30px_rgba(168,85,247,0.12)] transition-all"
+          >
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-xl">
+                🎤
+              </div>
+              <h3 className="text-lg font-bold text-white">AI Interview Simulator</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Simulate vocal audio mock interviews. Receive transcripts, pronunciation fluency, and STAR structure evaluations.
+              </p>
             </div>
-          </article>
+            <div className="mt-8 pt-4 border-t border-slate-800/40 flex justify-between items-center text-[10px] font-semibold text-purple-400">
+              <span>WebSpeech Transcripts</span>
+              <span>Verified ➔</span>
+            </div>
+          </motion.article>
 
-          {/* Card 3: Skill Gap Scanner */}
-          <article className="dashboard-card" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div style={{ fontSize: '2rem' }}>🔍</div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Semantic Skill Gap Detection</h3>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-              Compare your experience bullet points against target job descriptions in real-time. Our vector database instantly flags missing technical toolsets and concepts before you submit applications.
-            </p>
-            <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border)', paddingTop: '12px' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--accent-light)', fontWeight: 600 }}>Vector Matching Algorithms</span>
-              <span className="status-badge primary">Pinecone RAG</span>
+          {/* Card 3: Skill Gap */}
+          <motion.article 
+            whileHover={{ y: -6 }}
+            className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-cyan-500/30 hover:shadow-[0_0_30px_rgba(6,182,212,0.12)] transition-all"
+          >
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-xl">
+                🎯
+              </div>
+              <h3 className="text-lg font-bold text-white">Skill Gap Detector</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Scans job summaries to isolate lacking technical skills, generating immediate lists of milestones to study.
+              </p>
             </div>
-          </article>
+            <div className="mt-8 pt-4 border-t border-slate-800/40 flex justify-between items-center text-[10px] font-semibold text-cyan-400">
+              <span>Vector Semantic Router</span>
+              <span>Verified ➔</span>
+            </div>
+          </motion.article>
 
-          {/* Card 4: Roadmap Generator */}
-          <article className="dashboard-card" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div style={{ fontSize: '2rem' }}>📚</div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Custom Interactive Roadmaps</h3>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-              Receive a step-by-step personalized learning curriculum to conquer missing competencies. Features built-in mock quizzes and direct text explanations to track milestone completions smoothly.
-            </p>
-            <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border)', paddingTop: '12px' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--warning)', fontWeight: 600 }}>Milestone Tracking</span>
-              <span className="status-badge success">{roadmap.length} Active Node</span>
+          {/* Card 4: Roadmap */}
+          <motion.article 
+            whileHover={{ y: -6 }}
+            className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-warning/30 hover:shadow-[0_0_30px_rgba(245,158,11,0.12)] transition-all"
+          >
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-xl">
+                📚
+              </div>
+              <h3 className="text-lg font-bold text-white">AI Roadmap Generator</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Generate tailored study syllabi packed with summaries, lecture sheets, and interactive multiple-choice quizzes.
+              </p>
             </div>
-          </article>
+            <div className="mt-8 pt-4 border-t border-slate-800/40 flex justify-between items-center text-[10px] font-semibold text-warning">
+              <span>Interactive Timelines</span>
+              <span>Verified ➔</span>
+            </div>
+          </motion.article>
 
-          {/* Card 5: Sandboxed Coding IDE */}
-          <article className="dashboard-card" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div style={{ fontSize: '2rem' }}>💻</div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Sandboxed Coding Sandbox</h3>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-              Practice mock algorithms in our browser-compiled, syntax-highlighted IDE. Solve code challenges and run immediate evaluations against predefined edge-case test matrix suites directly.
-            </p>
-            <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border)', paddingTop: '12px' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 600 }}>Browser JS Compiler</span>
-              <span className="status-badge danger">Sandbox Ready</span>
+          {/* Card 5: Sandbox */}
+          <motion.article 
+            whileHover={{ y: -6 }}
+            className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-sky-500/30 hover:shadow-glow transition-all"
+          >
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-xl">
+                💻
+              </div>
+              <h3 className="text-lg font-bold text-white">Coding Practice Platform</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Resolve challenges inside a double-pane editor that compiles scripts locally and audits lexical complexity.
+              </p>
             </div>
-          </article>
+            <div className="mt-8 pt-4 border-t border-slate-800/40 flex justify-between items-center text-[10px] font-semibold text-sky-400">
+              <span>Big-O Lexical Audits</span>
+              <span>Verified ➔</span>
+            </div>
+          </motion.article>
 
-          {/* Card 6: Kanban Pipeline Tracker */}
-          <article className="dashboard-card" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <div style={{ fontSize: '2rem' }}>💼</div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700 }}>Kanban Job Funnel Tracker</h3>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-              Stay on top of recruiting funnels with a dedicated Kanban taskboard. Log dates, add application review templates, save custom salary benchmarks, and monitor your funnel ratios smoothly.
-            </p>
-            <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border)', paddingTop: '12px' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--accent-light)', fontWeight: 600 }}>Drag-and-Drop Structure</span>
-              <span className="status-badge success">{jobs.length} Active Jobs</span>
+          {/* Card 6: Kanban Tracker */}
+          <motion.article 
+            whileHover={{ y: -6 }}
+            className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.12)] transition-all"
+          >
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-xl">
+                💼
+              </div>
+              <h3 className="text-lg font-bold text-white">Smart Job Dashboard</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Organize schedules across columns and unpack custom, automated strategy logs optimized for target employers.
+              </p>
             </div>
-          </article>
+            <div className="mt-8 pt-4 border-t border-slate-800/40 flex justify-between items-center text-[10px] font-semibold text-emerald-400">
+              <span>Employer Strategies</span>
+              <span>Verified ➔</span>
+            </div>
+          </motion.article>
 
         </div>
       </section>
 
-      {/* 3. ADVANCED AI SYSTEMS NETWORK DIAGRAM */}
-      <section id="ai-systems" style={{ padding: '80px 24px', background: 'var(--surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', position: 'relative', zIndex: 10 }}>
-        
-        <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-          <span className="status-badge primary" style={{ marginBottom: '12px' }}>
-            ⚙️ PLATFORM ARCHITECTURE
+      {/* SECTION 4 — WHY CHOOSE US */}
+      <section className="relative z-10 max-w-[1100px] mx-auto px-6 py-24 border-t border-slate-900">
+        <div className="text-center max-w-xl mx-auto mb-16">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold text-sky-400 bg-sky-500/10 rounded-full border border-sky-500/10 uppercase tracking-widest">
+            The Advantage
           </span>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.03em' }}>
-            Next-Gen RAG & Agent Coordination Flow
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', maxWidth: '640px', margin: '8px auto 0' }}>
-            Take a look under the hood. Hover or click on the core server hubs below to inspect how AI orchestrates your career roadmap metrics in real-time.
-          </p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold mt-4">Why AI Career Copilot?</h2>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '40px', maxWidth: '1100px', margin: '0 auto', alignItems: 'center' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+          <div className="bg-slate-950/60 border border-slate-850 p-8 rounded-2xl shadow-xl space-y-6">
+            <h3 className="text-lg font-extrabold text-slate-400 flex items-center gap-2">
+              <XCircle className="w-5 h-5 text-red-500/80" /> Traditional Career Prep
+            </h3>
+            <ul className="space-y-4 text-xs text-slate-400">
+              <li className="flex items-start gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-650 mt-1.5 flex-shrink-0" />
+                <span>Static, uncustomized resume templates rejected by modern ATS parsers.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-650 mt-1.5 flex-shrink-0" />
+                <span>Anxiety-inducing mock loops that give only general, delayed visual feedback.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-slate-650 mt-1.5 flex-shrink-0" />
+                <span>Juggling dozens of paid subscriptions for quizzes, editors, and job logs.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-gradient-to-br from-slate-900/50 to-slate-950/50 border border-sky-500/20 p-8 rounded-2xl shadow-glow relative overflow-hidden space-y-6">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-sky-500/5 rounded-full blur-2xl pointer-events-none" />
+            <h3 className="text-lg font-extrabold text-sky-400 flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-emerald-400" /> Integrated AI Ecosystem
+            </h3>
+            <ul className="space-y-4 text-xs text-slate-200">
+              <li className="flex items-start gap-3">
+                <Sparkles className="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5" />
+                <span>Dynamic real-time optimization checks utilizing results-focused formats.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Sparkles className="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5" />
+                <span>Simulated interview voice bots scoring transcripts, metrics, and gaps.</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Sparkles className="w-4 h-4 text-sky-400 flex-shrink-0 mt-0.5" />
+                <span>Syllabus generators, algorithm playgrounds, and pipelines under one suite.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5 — DASHBOARD PREVIEW */}
+      <section id="ai-systems" className="relative z-10 max-w-[1100px] mx-auto px-6 py-24 border-t border-slate-900">
+        <div className="text-center max-w-xl mx-auto mb-16">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold text-purple-400 bg-purple-500/10 rounded-full border border-purple-500/10 uppercase tracking-widest">
+            Architecture
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold mt-4">Next-Gen RAG System Flow</h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           
           {/* Left Grid: SVG Connections mapping */}
-          <div className="col-7" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'visible' }}>
-            
-            {/* Locked-Width Diagram Frame to prevent coordinate drift */}
-            <div style={{ position: 'relative', width: '540px', height: '350px', flexShrink: 0 }}>
-              
-              {/* SVG connectors with active pulsing beams */}
-              <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, overflow: 'visible', zIndex: 1 }}>
-                
-                {/* Connector Paths */}
+          <div className="lg:col-span-7 flex justify-center items-center overflow-visible h-[350px]">
+            <div className="relative w-[540px] h-[350px] flex-shrink-0">
+              <svg width="100%" height="100%" className="absolute top-0 left-0 overflow-visible z-10">
                 <path d="M 50,175 Q 120,75 220,75" fill="none" stroke="rgba(168, 85, 247, 0.25)" strokeWidth="2" strokeDasharray="4 4" />
                 <path d="M 50,175 Q 120,275 220,275" fill="none" stroke="rgba(56, 189, 248, 0.25)" strokeWidth="2" strokeDasharray="4 4" />
                 <path d="M 220,75 H 420" fill="none" stroke="rgba(56, 189, 248, 0.2)" strokeWidth="2" />
                 <path d="M 220,275 H 420" fill="none" stroke="rgba(168, 85, 247, 0.2)" strokeWidth="2" />
                 <path d="M 420,75 Q 490,175 420,275" fill="none" stroke="rgba(16, 185, 129, 0.25)" strokeWidth="2" strokeDasharray="4 4" />
 
-                {/* SVG Pulsing Beams (Simulated via traveling bullets along paths) */}
                 <circle cx="150" cy="115" r="4" fill="var(--primary)" filter="drop-shadow(0 0 4px var(--primary))">
                   <animateMotion path="M 50,175 Q 120,75 220,75" dur="3s" repeatCount="indefinite" />
                 </circle>
-                
                 <circle cx="150" cy="235" r="4" fill="var(--secondary)" filter="drop-shadow(0 0 4px var(--secondary))">
                   <animateMotion path="M 50,175 Q 120,275 220,275" dur="4s" repeatCount="indefinite" />
                 </circle>
-
                 <circle cx="320" cy="75" r="4" fill="var(--accent)">
                   <animateMotion path="M 220,75 H 420" dur="2s" repeatCount="indefinite" />
                 </circle>
               </svg>
 
-              {/* Dynamic Node Elements (Centered mathematically at x=50, 220, 420) */}
-              <div style={{ position: 'absolute', top: '140px', left: '15px', zIndex: 10 }}>
-                <button 
-                  onClick={() => setSelectedSystemNode('voice')}
-                  style={{
-                    background: selectedSystemNode === 'voice' ? 'linear-gradient(135deg, var(--primary), var(--secondary))' : 'var(--surface)',
-                    border: `1px solid ${selectedSystemNode === 'voice' ? 'var(--primary)' : 'var(--border)'}`,
-                    color: selectedSystemNode === 'voice' ? '#000' : '#fff',
-                    width: '70px', height: '70px', borderRadius: '50%', cursor: 'pointer', fontWeight: 800, fontSize: '0.8rem',
-                    boxShadow: selectedSystemNode === 'voice' ? '0 0 20px rgba(56, 189, 248, 0.4)' : 'none',
-                    display: 'grid', placeItems: 'center', transition: 'all 0.3s ease'
-                  }}
-                >
-                  🎤 Voice
-                </button>
+              {/* Server Nodes */}
+              <div className="absolute top-[140px] left-[15px] z-20">
+                <button onClick={() => setSelectedSystemNode('voice')} className={`w-[70px] h-[70px] rounded-full font-extrabold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'voice' ? 'bg-gradient-to-r from-sky-400 to-purple-500 text-slate-950 shadow-sky-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>🎤 Voice</button>
               </div>
-
-              <div style={{ position: 'absolute', top: '54px', left: '220px', transform: 'translateX(-50%)', zIndex: 10 }}>
-                <button 
-                  onClick={() => setSelectedSystemNode('rag')}
-                  style={{
-                    background: selectedSystemNode === 'rag' ? 'linear-gradient(135deg, var(--primary), var(--secondary))' : 'var(--surface)',
-                    border: `1px solid ${selectedSystemNode === 'rag' ? 'var(--primary)' : 'var(--border)'}`,
-                    color: selectedSystemNode === 'rag' ? '#000' : '#fff',
-                    padding: '12px 20px', borderRadius: '9999px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem',
-                    boxShadow: selectedSystemNode === 'rag' ? '0 0 20px rgba(56, 189, 248, 0.4)' : 'none',
-                    transition: 'all 0.3s ease',
-                    whiteSpace: 'nowrap'
-                  }}
-                >
-                  🛰️ RAG Coordinator
-                </button>
+              <div className="absolute top-[54px] left-[220px] -translate-x-1/2 z-20">
+                <button onClick={() => setSelectedSystemNode('rag')} className={`px-5 py-3 rounded-full font-bold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'rag' ? 'bg-gradient-to-r from-sky-400 to-purple-500 text-slate-950 shadow-sky-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>🛰️ RAG Coordinator</button>
               </div>
-
-              <div style={{ position: 'absolute', bottom: '54px', left: '220px', transform: 'translateX(-50%)', zIndex: 10 }}>
-                <button 
-                  onClick={() => setSelectedSystemNode('pinecone')}
-                  style={{
-                    background: selectedSystemNode === 'pinecone' ? 'linear-gradient(135deg, var(--primary), var(--secondary))' : 'var(--surface)',
-                    border: `1px solid ${selectedSystemNode === 'pinecone' ? 'var(--primary)' : 'var(--border)'}`,
-                    color: selectedSystemNode === 'pinecone' ? '#000' : '#fff',
-                    padding: '12px 20px', borderRadius: '9999px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem',
-                    boxShadow: selectedSystemNode === 'pinecone' ? '0 0 20px rgba(168, 85, 247, 0.4)' : 'none',
-                    transition: 'all 0.3s ease',
-                    whiteSpace: 'nowrap'
-                  }}
-                >
-                  💾 Pinecone DB
-                </button>
+              <div className="absolute bottom-[54px] left-[220px] -translate-x-1/2 z-20">
+                <button onClick={() => setSelectedSystemNode('pinecone')} className={`px-5 py-3 rounded-full font-bold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'pinecone' ? 'bg-gradient-to-r from-sky-400 to-purple-500 text-slate-950 shadow-purple-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>💾 Pinecone DB</button>
               </div>
-
-              <div style={{ position: 'absolute', top: '35px', left: '420px', transform: 'translateX(-50%)', zIndex: 10 }}>
-                <button 
-                  onClick={() => setSelectedSystemNode('llm')}
-                  style={{
-                    background: selectedSystemNode === 'llm' ? 'linear-gradient(135deg, var(--primary), var(--secondary))' : 'var(--surface)',
-                    border: `1px solid ${selectedSystemNode === 'llm' ? 'var(--primary)' : 'var(--border)'}`,
-                    color: selectedSystemNode === 'llm' ? '#000' : '#fff',
-                    width: '80px', height: '80px', borderRadius: '50%', cursor: 'pointer', fontWeight: 800, fontSize: '0.85rem',
-                    boxShadow: selectedSystemNode === 'llm' ? '0 0 25px rgba(56, 189, 248, 0.4)' : 'none',
-                    display: 'grid', placeItems: 'center', transition: 'all 0.3s ease',
-                    whiteSpace: 'nowrap'
-                  }}
-                >
-                  🧠 LLM Core
-                </button>
+              <div className="absolute top-[35px] left-[420px] -translate-x-1/2 z-20">
+                <button onClick={() => setSelectedSystemNode('llm')} className={`w-[80px] h-[80px] rounded-full font-extrabold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'llm' ? 'bg-gradient-to-r from-sky-400 to-purple-500 text-slate-950 shadow-sky-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>🧠 LLM Core</button>
               </div>
-
-              <div style={{ position: 'absolute', bottom: '54px', left: '420px', transform: 'translateX(-50%)', zIndex: 10 }}>
-                <button 
-                  onClick={() => setSelectedSystemNode('stripe')}
-                  style={{
-                    background: selectedSystemNode === 'stripe' ? 'linear-gradient(135deg, var(--primary), var(--secondary))' : 'var(--surface)',
-                    border: `1px solid ${selectedSystemNode === 'stripe' ? 'var(--primary)' : 'var(--border)'}`,
-                    color: selectedSystemNode === 'stripe' ? '#000' : '#fff',
-                    padding: '12px 20px', borderRadius: '9999px', cursor: 'pointer', fontWeight: 700, fontSize: '0.8rem',
-                    boxShadow: selectedSystemNode === 'stripe' ? '0 0 20px rgba(168, 85, 247, 0.4)' : 'none',
-                    transition: 'all 0.3s ease',
-                    whiteSpace: 'nowrap'
-                  }}
-                >
-                  💳 Stripe JWT
-                </button>
+              <div className="absolute bottom-[54px] left-[420px] -translate-x-1/2 z-20">
+                <button onClick={() => setSelectedSystemNode('stripe')} className={`px-5 py-3 rounded-full font-bold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'stripe' ? 'bg-gradient-to-r from-sky-400 to-purple-500 text-slate-950 shadow-purple-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>💳 Stripe JWT</button>
               </div>
-
             </div>
-
           </div>
 
-          {/* Right Grid: Explanation box */}
-          <div className="col-5">
-            <div className="glass-panel" style={{ padding: '32px', textAlign: 'left', minHeight: '260px' }}>
-              <span className="status-badge success" style={{ marginBottom: '8px' }}>
-                {getSystemNodeDescription().tech}
-              </span>
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '12px', color: 'var(--text)' }}>
-                {getSystemNodeDescription().title}
-              </h3>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.92rem', lineHeight: '1.6' }}>
-                {getSystemNodeDescription().desc}
-              </p>
-              <div style={{ marginTop: '24px', display: 'flex', gap: '8px', alignItems: 'center', fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 700 }}>
-                <span>✨ Connected to global endpoint nodes</span>
-                <span className="status-badge success" style={{ padding: '2px 8px', fontSize: '0.65rem' }}>ONLINE</span>
+          {/* Right Grid: Node explanation panel */}
+          <div className="lg:col-span-5 text-left">
+            <div className="bg-slate-900/40 backdrop-blur-xl border border-slate-800/80 p-8 rounded-2xl shadow-2xl min-h-[260px] flex flex-col justify-between">
+              <div>
+                <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/10 uppercase tracking-widest mb-3 inline-block">
+                  {getSystemNodeDescription().tech}
+                </span>
+                <h3 className="text-xl font-extrabold text-white mb-2">
+                  {getSystemNodeDescription().title}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  {getSystemNodeDescription().desc}
+                </p>
+              </div>
+              <div className="mt-6 flex items-center gap-2 text-[10px] font-bold text-sky-400 uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                System Integration online
               </div>
             </div>
           </div>
@@ -877,641 +780,356 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. LIVE AI MENTOR CHAT PREVIEW WIDGET */}
-      <section id="chat-preview" style={{ padding: '80px 24px', position: 'relative', zIndex: 10 }}>
-        
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <span className="status-badge primary" style={{ marginBottom: '12px' }}>
-            💬 CHAT LIVE WITH MENTOR
+      {/* SECTION 6 — TESTIMONIALS & AI MENTOR PREVIEW */}
+      <section id="chat-preview" className="relative z-10 max-w-[1100px] mx-auto px-6 py-24 border-t border-slate-900">
+        <div className="text-center max-w-xl mx-auto mb-16">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold text-sky-400 bg-sky-500/10 rounded-full border border-sky-500/10 uppercase tracking-widest">
+            Live Chat
           </span>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.03em' }}>
-            Test Your Mentorship Copilot Below
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', maxWidth: '640px', margin: '8px auto 0' }}>
-            Ask anything about technical system design, behaviorals, or placement roadmaps. Try clicking our preset prompts to watch our real-time streaming answer simulation!
-          </p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold mt-4">Consult the AI Copilot</h2>
         </div>
 
-        <div className="glass-panel" style={{
-          maxWidth: '820px',
-          margin: '0 auto',
-          padding: '24px',
-          background: 'rgba(16, 23, 38, 0.75)',
-          border: '1px solid var(--border-hover)',
-          boxShadow: 'var(--shadow-glow)',
-          display: 'flex',
-          flexDirection: 'column',
-          height: '520px',
-          textAlign: 'left'
-        }}>
+        {/* Live typing previews */}
+        <div className="bg-slate-900/40 border border-slate-800/80 p-6 rounded-3xl shadow-glow text-left flex flex-col justify-between max-w-3xl mx-auto h-[480px]">
           
-          {/* Preset trigger prompts */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '16px' }}>
-            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', alignSelf: 'center' }}>Presets:</span>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <span className="text-[10px] text-slate-500 self-center">Presets:</span>
             {chatPresets.map((preset, idx) => (
-              <button
-                key={idx}
+              <button 
+                key={idx} 
                 onClick={() => handleChatPresetClick(idx)}
                 disabled={isTyping}
-                style={{
-                  padding: '6px 12px',
-                  background: 'rgba(56, 189, 248, 0.05)',
-                  border: '1px solid rgba(56, 189, 248, 0.15)',
-                  color: 'var(--primary)',
-                  fontSize: '0.78rem',
-                  borderRadius: '9999px',
-                  cursor: 'pointer',
-                  fontWeight: 600,
-                  transition: 'all 0.2s ease',
-                  opacity: isTyping ? 0.6 : 1
-                }}
+                className="text-[9px] font-bold text-sky-400 bg-sky-500/5 border border-sky-500/20 hover:bg-sky-500/10 px-3 py-1.5 rounded-full transition-all disabled:opacity-50"
               >
-                💡 {preset.prompt}
+                {preset.prompt}
               </button>
             ))}
           </div>
 
-          {/* Chat Messages thread */}
-          <div style={{
-            flex: 1,
-            background: 'rgba(3, 7, 18, 0.8)',
-            border: '1px solid var(--border)',
-            borderRadius: 'var(--radius)',
-            padding: '20px',
-            overflowY: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '14px',
-            marginBottom: '16px'
-          }}>
+          <div className="flex-1 bg-slate-950/80 border border-slate-900 rounded-2xl p-6 overflow-y-auto space-y-4 mb-4">
             {chatMessages.map((msg, idx) => (
-              <div
-                key={idx}
-                style={{
-                  display: 'flex',
-                  justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                }}
-              >
-                <div style={{
-                  maxWidth: '85%',
-                  background: msg.sender === 'user' ? 'linear-gradient(135deg, var(--primary), var(--primary-dark))' : 'rgba(255, 255, 255, 0.03)',
-                  border: msg.sender === 'user' ? 'none' : '1px solid var(--border)',
-                  color: msg.sender === 'user' ? '#000' : 'var(--text)',
-                  padding: '12px 18px',
-                  borderRadius: msg.sender === 'user' ? '18px 18px 2px 18px' : '18px 18px 18px 2px',
-                  fontSize: '0.88rem',
-                  lineHeight: '1.5',
-                  whiteSpace: 'pre-line',
-                  fontWeight: msg.sender === 'user' ? 600 : 400
-                }}>
-                  {msg.text || (isTyping && idx === chatMessages.length - 1 ? 'Typing guidance...' : '')}
+              <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[80%] px-4 py-3 rounded-2xl text-xs leading-normal ${msg.sender === 'user' ? 'bg-sky-500 text-slate-950 font-bold rounded-tr-none' : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-tl-none'}`}>
+                  {msg.text || (isTyping && idx === chatMessages.length - 1 ? 'Streaming evaluation...' : '')}
                 </div>
               </div>
             ))}
-            {isTyping && (
-              <div style={{ display: 'flex', gap: '6px', alignSelf: 'flex-start', paddingLeft: '8px' }}>
-                <span className="status-badge primary" style={{ padding: '4px 10px', fontSize: '0.65rem' }}>AI streaming...</span>
-              </div>
-            )}
             <div ref={chatEndRef} />
           </div>
 
-          {/* Form input */}
-          <form onSubmit={handleCustomChatSubmit} style={{ display: 'flex', gap: '12px' }}>
-            <input
-              type="text"
+          <form onSubmit={handleCustomChatSubmit} className="flex gap-2">
+            <input 
+              type="text" 
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
-              placeholder="Ask anything about interviews, resumes, or engineering..."
-              style={{
-                flex: 1,
-                background: 'rgba(3, 7, 18, 0.6)',
-                border: '1px solid var(--border)',
-                borderRadius: '9999px',
-                padding: '12px 24px',
-                fontSize: '0.9rem',
-                color: '#fff',
-                outline: 'none'
-              }}
+              placeholder="Ask anything about coding sandbox algorithms, templates..."
+              className="flex-1 bg-slate-950/60 border border-slate-850 rounded-xl px-5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
             />
-            <button
-              type="submit"
-              disabled={isTyping || !chatInput.trim()}
-              className="btn-saas-gradient"
-              style={{
-                padding: '12px 28px',
-                borderRadius: '9999px',
-                fontSize: '0.88rem',
-                opacity: isTyping || !chatInput.trim() ? 0.6 : 1
-              }}
-            >
-              Send 🚀
+            <button type="submit" disabled={isTyping || !chatInput.trim()} className="bg-sky-500 text-slate-950 font-bold text-xs px-6 py-3 rounded-xl hover:bg-sky-400 transition-all active:scale-95 disabled:opacity-50">
+              Send ➔
             </button>
           </form>
 
         </div>
-      </section>
 
-      {/* 5. HOW IT WORKS TIMELINE */}
-      <section style={{ padding: '80px 24px', background: 'rgba(3, 7, 18, 0.2)', position: 'relative', zIndex: 10 }}>
-        
-        <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-          <span className="status-badge warning" style={{ marginBottom: '12px' }}>
-            🚀 STEP-BY-STEP RECRUITING PIPELINE
-          </span>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.03em' }}>
-            How AI Career Copilot Works
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', maxWidth: '640px', margin: '8px auto 0' }}>
-            Our structured, data-driven cycle guides you smoothly from first-time registration directly to signed job offers.
-          </p>
-        </div>
-
-        <div className="timeline-saas-flow">
-          
-          {/* Step 1 */}
-          <div className="timeline-saas-step">
-            <div className="timeline-saas-marker">1</div>
-            <div className="timeline-saas-content">
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '4px' }}>Establish Target Targets</h3>
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-                Define your ideal job specifications, target engineering fields (Backend, Frontend, Fullstack, AI), and experience thresholds during authentication.
-              </p>
-            </div>
+        {/* Testimonials Slider */}
+        <div id="testimonials" className="mt-28">
+          <div className="flex items-center justify-between max-w-xl mx-auto mb-10">
+            <button onClick={handlePrevTestimonial} className="w-10 h-10 rounded-full border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-slate-600 transition-all">←</button>
+            <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500">Student Success</span>
+            <button onClick={handleNextTestimonial} className="w-10 h-10 rounded-full border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-slate-600 transition-all">→</button>
           </div>
 
-          {/* Step 2 */}
-          <div className="timeline-saas-step">
-            <div className="timeline-saas-marker">2</div>
-            <div className="timeline-saas-content">
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '4px' }}>Upload Resume to Scan</h3>
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-                Run your resume through the generative ATS alignment scoring tool to resolve layout formatting faults and identify critical semantic keyword deficits instantly.
-              </p>
-            </div>
-          </div>
-
-          {/* Step 3 */}
-          <div className="timeline-saas-step">
-            <div className="timeline-saas-marker">3</div>
-            <div className="timeline-saas-content">
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '4px' }}>Acquire Missing Skillsets</h3>
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-                Tackle custom learning milestones crafted specifically to plug your parsed technical gaps. Test structural knowledge with interactive mock quizzes.
-              </p>
-            </div>
-          </div>
-
-          {/* Step 4 */}
-          <div className="timeline-saas-step">
-            <div className="timeline-saas-marker">4</div>
-            <div className="timeline-saas-content">
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '4px' }}>Slay the Mock Interview Loops</h3>
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-                Simulate authentic high-intensity recruiting rounds with our responsive generative voice bots, honing your behavioral storytelling and deep architectural reasoning.
-              </p>
-            </div>
-          </div>
-
-          {/* Step 5 */}
-          <div className="timeline-saas-step">
-            <div className="timeline-saas-marker">5</div>
-            <div className="timeline-saas-content">
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '4px' }}>Sandbox Coding Drills</h3>
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-                Refine problem-solving algorithms inside our compiled, syntactically scoped compiler sandbox, executing scripts against standard edge cases directly.
-              </p>
-            </div>
-          </div>
-
-          {/* Step 6 */}
-          <div className="timeline-saas-step">
-            <div className="timeline-saas-marker">6</div>
-            <div className="timeline-saas-content">
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '4px' }}>Track Applications to the Signed Offer</h3>
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-                Manage recruiting schedules, application feedback cards, and active salary negotiations inside our integrated Kanban pipeline board to secure the dream job.
-              </p>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 6. TESTIMONIALS CAROUSEL */}
-      <section id="testimonials" style={{ padding: '80px 24px', position: 'relative', zIndex: 10 }}>
-        
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <span className="status-badge success" style={{ marginBottom: '12px' }}>
-            ⭐ SUCCESS FEEDBACKS
-          </span>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.03em' }}>
-            Trusted by Placing Students Globally
-          </h2>
-        </div>
-
-        <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '20px' }}>
-          
-          <button 
-            onClick={handlePrevTestimonial}
-            style={{
-              background: 'var(--surface)', border: '1px solid var(--border)', width: '48px', height: '48px', borderRadius: '50%',
-              cursor: 'pointer', display: 'grid', placeItems: 'center', fontSize: '1.2rem', color: '#fff',
-              transition: 'all 0.2s ease'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary)'}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
-          >
-            ←
-          </button>
-
-          <div className="glass-panel" style={{ flex: 1, padding: '36px', textAlign: 'left', position: 'relative', minHeight: '220px' }}>
-            
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                <div style={{
-                  width: '50px', height: '50px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
-                  display: 'grid', placeItems: 'center', fontWeight: 800, fontSize: '1.1rem', color: '#fff'
-                }}>
+          <div className="bg-slate-900/30 border border-slate-800 p-8 rounded-2xl max-w-2xl mx-auto text-left shadow-2xl space-y-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-sky-400 to-purple-500 flex items-center justify-center font-bold text-white shadow-lg">
                   {testimonials[activeTestimonial].avatar}
                 </div>
                 <div>
-                  <h4 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0 }}>{testimonials[activeTestimonial].name}</h4>
-                  <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                    {testimonials[activeTestimonial].role} at <strong style={{ color: 'var(--primary)' }}>{testimonials[activeTestimonial].company}</strong>
-                  </p>
+                  <h4 className="text-sm font-bold text-white">{testimonials[activeTestimonial].name}</h4>
+                  <p className="text-[10px] text-slate-500">{testimonials[activeTestimonial].role} at <strong className="text-sky-400">{testimonials[activeTestimonial].company}</strong></p>
                 </div>
               </div>
-              <div style={{ display: 'flex', gap: '2px', color: 'var(--warning)', fontSize: '1.1rem' }}>
-                {'★'.repeat(testimonials[activeTestimonial].rating)}
+              <div className="flex gap-0.5 text-warning">
+                {Array.from({ length: testimonials[activeTestimonial].rating }).map((_, idx) => <Star key={idx} className="w-3.5 h-3.5 fill-current" />)}
               </div>
             </div>
-
-            <p style={{ fontStyle: 'italic', color: 'var(--text)', fontSize: '1rem', lineHeight: '1.6' }}>
-              &ldquo;{testimonials[activeTestimonial].quote}&rdquo;
-            </p>
-
+            <p className="italic text-slate-300 text-sm leading-relaxed">&ldquo;{testimonials[activeTestimonial].quote}&rdquo;</p>
           </div>
-
-          <button 
-            onClick={handleNextTestimonial}
-            style={{
-              background: 'var(--surface)', border: '1px solid var(--border)', width: '48px', height: '48px', borderRadius: '50%',
-              cursor: 'pointer', display: 'grid', placeItems: 'center', fontSize: '1.2rem', color: '#fff',
-              transition: 'all 0.2s ease'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary)'}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
-          >
-            →
-          </button>
-
         </div>
       </section>
 
-      {/* 7. PRICING MATRIX GRID */}
-      <section id="pricing" style={{ padding: '80px 24px', borderTop: '1px solid var(--border)', position: 'relative', zIndex: 10 }}>
-        
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <span className="status-badge primary" style={{ marginBottom: '12px' }}>
-            🏷️ FLEXIBLE SaaS TIERS
+      {/* SECTION 7 — PRICING SECTION */}
+      <section id="pricing" className="relative z-10 max-w-[1100px] mx-auto px-6 py-24 border-t border-slate-900">
+        <div className="text-center max-w-xl mx-auto mb-16">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-bold text-purple-400 bg-purple-500/10 rounded-full border border-purple-500/10 uppercase tracking-widest">
+            SaaS pricing
           </span>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.03em' }}>
-            Stunning Value for Ambitious Seekers
-          </h2>
+          <h2 className="text-3xl sm:text-4xl font-extrabold mt-4">Simple, Predictable Tiers</h2>
           
-          {/* Monthly / Yearly Toggle */}
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '24px' }}>
-            <span style={{ fontSize: '0.9rem', color: billingInterval === 'monthly' ? '#fff' : 'var(--text-secondary)' }}>Monthly Billed</span>
-            <button
+          <div className="flex items-center justify-center gap-3 mt-6">
+            <span className={`text-xs font-semibold ${billingInterval === 'monthly' ? 'text-white' : 'text-slate-500'}`}>Monthly</span>
+            <button 
               onClick={() => setBillingInterval(prev => prev === 'monthly' ? 'yearly' : 'monthly')}
-              style={{
-                width: '64px', height: '32px', borderRadius: '9999px', background: 'var(--surface-alt)',
-                position: 'relative', cursor: 'pointer', border: '1px solid var(--border)', padding: '2px'
-              }}
+              className="w-12 h-6 bg-slate-900 rounded-full border border-slate-800 p-0.5 relative transition-all"
             >
-              <div style={{
-                width: '26px', height: '26px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary), var(--secondary))',
-                position: 'absolute', top: '2px', left: billingInterval === 'monthly' ? '2px' : '34px',
-                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)'
-              }} />
+              <div className={`w-4 h-4 rounded-full bg-gradient-to-r from-sky-400 to-purple-500 absolute top-0.5 transition-all ${billingInterval === 'monthly' ? 'left-0.5' : 'left-6.5'}`} />
             </button>
-            <span style={{ fontSize: '0.9rem', color: billingInterval === 'yearly' ? '#fff' : 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              Yearly Billed <strong className="status-badge success" style={{ padding: '2px 8px', fontSize: '0.65rem' }}>Save 20%</strong>
+            <span className={`text-xs font-semibold ${billingInterval === 'yearly' ? 'text-white' : 'text-slate-500'} flex items-center gap-1.5`}>
+              Yearly <strong className="text-[9px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/10 uppercase">Save 20%</strong>
             </span>
           </div>
-
         </div>
 
-        <div className="pricing-grid" style={{ maxWidth: '1100px', margin: '40px auto 0' }}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
-          {/* Starter Plan */}
-          <div className="pricing-card">
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '8px' }}>Starter Free</h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', minHeight: '40px' }}>
-              Hone basic alignment skills. Excellent for entry-level profiling audits.
-            </p>
-            <div className="pricing-price">
-              $0
-              <span>/ month</span>
+          {/* Card Free */}
+          <div className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between min-h-[460px] hover:border-slate-700/80 transition-all">
+            <div>
+              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Free Starter</h3>
+              <p className="text-xs text-slate-500 min-h-[32px]">Scoring audits for entry candidates.</p>
+              <div className="text-3xl font-extrabold text-white my-6">$0</div>
+              <ul className="space-y-3.5 text-xs text-slate-400 border-t border-slate-800/60 pt-6">
+                <li className="flex items-center gap-2">✓ Basic ATS score parsing</li>
+                <li className="flex items-center gap-2">✓ 3 mock voice evaluations</li>
+                <li className="flex items-center gap-2">✓ 1 custom syllabus roadmap</li>
+                <li className="flex items-center gap-2">✓ Algorithm playground sandbox</li>
+              </ul>
             </div>
-            
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', margin: '24px 0', fontSize: '0.88rem', color: 'var(--text-secondary)', textAlign: 'left' }}>
-              <li>✓ Basic ATS Resume Alignment scoring</li>
-              <li>✓ 3 simulated voice interviews</li>
-              <li>✓ Single standard learning roadmap</li>
-              <li>✓ basic compiler Sandbox templates</li>
-              <li style={{ textDecoration: 'line-through', opacity: 0.5 }}>✗ Unlimited system design critiques</li>
-              <li style={{ textDecoration: 'line-through', opacity: 0.5 }}>✗ Live vector skill gap matching</li>
-            </ul>
-
-            <button 
-              onClick={() => triggerAuthFromPlan('signup')} 
-              className="btn-secondary" 
-              style={{ marginTop: 'auto', width: '100%', justifyContent: 'center' }}
-            >
-              Get Started Free
-            </button>
+            <button onClick={() => triggerAuthFromPlan('signup')} className="w-full text-xs font-bold bg-slate-950 border border-slate-800 text-slate-300 py-3 rounded-xl mt-8 hover:bg-slate-900 transition-colors">Start Free Account</button>
           </div>
 
-          {/* Pro Premium Plan */}
-          <div className="pricing-card premium-pro">
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '8px', color: 'var(--primary)' }}>Professional Pro</h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', minHeight: '40px' }}>
-              Complete recruitment prep package. Unlimited AI evaluations and vector support.
-            </p>
-            <div className="pricing-price">
-              {billingInterval === 'monthly' ? '$19' : '$15'}
-              <span>/ month</span>
+          {/* Card Pro copilot */}
+          <div className="bg-gradient-to-b from-[#111124] to-[#040713] border border-purple-500/30 p-8 rounded-2xl text-left flex flex-col justify-between min-h-[460px] shadow-glow relative overflow-hidden">
+            <div className="absolute top-0 right-0 bg-purple-500 text-white font-extrabold text-[8px] uppercase tracking-wider px-4 py-1.5 rounded-bl-xl">POPULAR</div>
+            <div>
+              <h3 className="text-sm font-bold text-purple-400 uppercase tracking-wider mb-2">Professional Pro</h3>
+              <p className="text-xs text-slate-400 min-h-[32px]">Full-scale prep dashboard with dynamic evaluations.</p>
+              <div className="text-3xl font-extrabold text-white my-6">
+                {billingInterval === 'monthly' ? '$19' : '$15'}
+                <span className="text-xs font-semibold text-slate-500"> / month</span>
+              </div>
+              <ul className="space-y-3.5 text-xs text-slate-200 border-t border-slate-800/60 pt-6">
+                <li className="flex items-center gap-2">✓ **Unlimited** resume score optimization</li>
+                <li className="flex items-center gap-2">✓ **Unlimited** speech mock interviews</li>
+                <li className="flex items-center gap-2">✓ Vector semantic skill-gap audits</li>
+                <li className="flex items-center gap-2">✓ Sandbox lexical complexity logs</li>
+              </ul>
             </div>
-            
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', margin: '24px 0', fontSize: '0.88rem', color: 'var(--text)', textAlign: 'left' }}>
-              <li>✓ **Unlimited** ATS resume alignment optimization</li>
-              <li>✓ **Unlimited** streaming voice interview slots</li>
-              <li>✓ High-fidelity vector skill gap analysis</li>
-              <li>✓ Interactive sandbox coding evaluations</li>
-              <li>✓ Personal learning curriculum modules</li>
-              <li>✓ Priority ticket support response</li>
-            </ul>
-
-            <button 
-              onClick={() => triggerAuthFromPlan('signup')} 
-              className="btn-saas-gradient" 
-              style={{ marginTop: 'auto', width: '100%', justifyContent: 'center' }}
-            >
-              Start Pro Free Trial
-            </button>
+            <button onClick={() => triggerAuthFromPlan('signup')} className="w-full text-xs font-bold bg-gradient-to-r from-sky-400 to-purple-500 text-white py-3 rounded-xl mt-8 shadow-lg hover:scale-[1.01] transition-all">Start 7-Day Trial</button>
           </div>
 
-          {/* Enterprise University Plan */}
-          <div className="pricing-card">
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '8px' }}>Enterprise Hub</h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', minHeight: '40px' }}>
-              For colleges, engineering universities, and placement administrative hubs.
-            </p>
-            <div className="pricing-price" style={{ fontSize: '2rem' }}>
-              Custom
+          {/* Card Ultimate AI */}
+          <div className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between min-h-[460px] hover:border-slate-700/80 transition-all">
+            <div>
+              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Ultimate AI</h3>
+              <p className="text-xs text-slate-500 min-h-[32px]">For university cohort groups and placement heads.</p>
+              <div className="text-3xl font-extrabold text-white my-6">Custom</div>
+              <ul className="space-y-3.5 text-xs text-slate-400 border-t border-slate-800/60 pt-6">
+                <li className="flex items-center gap-2">✓ Shared cohort dashboards</li>
+                <li className="flex items-center gap-2">✓ Custom API developer tokens</li>
+                <li className="flex items-center gap-2">✓ Personalized university templates</li>
+                <li className="flex items-center gap-2">✓ Dedicated account manager</li>
+              </ul>
             </div>
-            
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', margin: '24px 0', fontSize: '0.88rem', color: 'var(--text-secondary)', textAlign: 'left' }}>
-              <li>✓ Bulk cohort license distributions</li>
-              <li>✓ Shared admin analytics dashboard charts</li>
-              <li>✓ Customized skill metrics configurations</li>
-              <li>✓ API tokens access for external databases</li>
-              <li>✓ Dedicated account placement officer</li>
-              <li>✓ SLA uptime guaranteed</li>
-            </ul>
-
-            <a 
-              href="mailto:partners@copilot.ai?subject=Enterprise Placement Partnerships" 
-              className="btn-secondary" 
-              style={{ marginTop: 'auto', width: '100%', justifyContent: 'center', display: 'inline-flex', alignItems: 'center' }}
-            >
-              Contact Partnerships
-            </a>
+            <a href="mailto:partners@copilot.ai" className="w-full text-center text-xs font-bold bg-slate-950 border border-slate-800 text-slate-300 py-3 rounded-xl mt-8 hover:bg-slate-900 transition-colors">Contact Partnerships</a>
           </div>
 
         </div>
       </section>
 
-      {/* 8. AUTHENTICATION MODALS */}
+      {/* SECTION 8 — CTA SECTION */}
+      <section className="relative z-10 max-w-[1100px] mx-auto px-6 py-20 text-center">
+        <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800/80 p-12 rounded-3xl shadow-glow relative overflow-hidden max-w-4xl mx-auto">
+          <div className="absolute top-[-20%] left-[-20%] w-[350px] h-[350px] rounded-full bg-sky-500/5 blur-[100px] pointer-events-none" />
+          <div className="absolute bottom-[-20%] right-[-20%] w-[350px] h-[350px] rounded-full bg-purple-500/5 blur-[100px] pointer-events-none" />
+          
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent mb-4">
+            Start Building Your AI Career Today
+          </h2>
+          <p className="text-slate-400 text-sm max-w-lg mx-auto mb-8">
+            Deploy your targets, score resumes dynamically, and evaluate vocal speech loops inside our integrated workspace.
+          </p>
+
+          <div className="flex flex-wrap gap-4 justify-center">
+            {isAuthenticated ? (
+              <Link to="/career" className="bg-gradient-to-r from-sky-400 to-purple-500 text-slate-950 font-extrabold text-xs px-8 py-3.5 rounded-xl hover:scale-102 transition-all">
+                Enter Placement Hub 🚀
+              </Link>
+            ) : (
+              <button onClick={() => triggerAuthFromPlan('signup')} className="bg-gradient-to-r from-sky-400 to-purple-500 text-white font-extrabold text-xs px-8 py-3.5 rounded-xl hover:scale-102 transition-all shadow-lg shadow-sky-500/10">
+                Create Free Profile
+              </button>
+            )}
+            <a href="#features" className="text-slate-300 hover:text-white bg-slate-900 border border-slate-800 font-extrabold text-xs px-8 py-3.5 rounded-xl transition-colors">
+              Explore Core Capabilities
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 9 — FOOTER */}
+      <footer className="relative z-10 border-t border-slate-900 bg-slate-950/80 py-16 px-6">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 text-left">
+          
+          {/* Brand Info */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-sky-400 to-purple-500 flex items-center justify-center font-bold text-white">
+                Ω
+              </div>
+              <strong className="font-extrabold text-base tracking-tight text-white">AI Career Copilot</strong>
+            </div>
+            <p className="text-xs text-slate-500 leading-normal">
+              World-class automated placement suite guiding software engineering and product seekers directly into tech roles.
+            </p>
+            <div className="text-[10px] text-slate-600">
+              © 2026 AI Career Copilot Inc. <br/>All vectors secure.
+            </div>
+          </div>
+
+          {/* Quick links */}
+          <div>
+            <h4 className="text-xs font-extrabold uppercase tracking-widest text-white mb-4">Features</h4>
+            <ul className="space-y-3 text-xs text-slate-500">
+              <li><Link to="/resume" className="hover:text-white transition-colors">Resume Optimizer</Link></li>
+              <li><Link to="/interview" className="hover:text-white transition-colors">Mock Voice Room</Link></li>
+              <li><Link to="/career" className="hover:text-white transition-colors">Dashboard Pipeline</Link></li>
+              <li><Link to="/roadmap" className="hover:text-white transition-colors">Syllabus Milestones</Link></li>
+            </ul>
+          </div>
+
+          {/* Docs & systems */}
+          <div>
+            <h4 className="text-xs font-extrabold uppercase tracking-widest text-white mb-4">Resources</h4>
+            <ul className="space-y-3 text-xs text-slate-500">
+              <li><Link to="/about" className="hover:text-white transition-colors">Overview Docs</Link></li>
+              <li><a href="#ai-systems" className="hover:text-white transition-colors">RAG coordinate Spec</a></li>
+              <li><a href="#chat-preview" className="hover:text-white transition-colors">API Schema Keys</a></li>
+              <li><a href="#pricing" className="hover:text-white transition-colors">SaaS Subscriptions</a></li>
+            </ul>
+          </div>
+
+          {/* Newsletter signup */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-extrabold uppercase tracking-widest text-white mb-4">Newsletter</h4>
+            <p className="text-xs text-slate-500 leading-normal">Stay up to date with seasonal placement updates, prompt templates, and updates.</p>
+            <form onSubmit={(e) => { e.preventDefault(); alert('Subscribed successfully!'); }} className="flex gap-2">
+              <input 
+                type="email" 
+                required 
+                placeholder="developer@domain.com"
+                className="bg-slate-900 border border-slate-800 text-xs px-4 py-2 rounded-lg text-white w-full placeholder-slate-500 focus:outline-none focus:border-sky-500"
+              />
+              <button type="submit" className="bg-sky-500 text-slate-950 font-bold text-xs px-4 py-2 rounded-lg hover:bg-sky-400 transition-colors">Join</button>
+            </form>
+          </div>
+
+        </div>
+      </footer>
+
+      {/* AUTH MODAL INTERFACE */}
       {authModal && (
         <div className="modal-overlay" onClick={() => setAuthModal(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ textAlign: 'center' }}>
+          <div className="modal-content text-center" onClick={(e) => e.stopPropagation()}>
             
-            <button className="modal-close" onClick={() => setAuthModal(null)} aria-label="Close auth popup">
+            <button className="modal-close" onClick={() => setAuthModal(null)} aria-label="Close auth dialog">
               ✕
             </button>
 
-            <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '8px' }}>
+            <h2 className="text-2xl font-black text-white mb-2">
               {authModal === 'login' ? 'Welcome Back!' : 'Create Account'}
             </h2>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '24px' }}>
-              Secure stateless session orchestration via RAG gateway services.
+            <p className="text-xs text-slate-400 mb-6">
+              Access your personalized career dashboard.
             </p>
 
-            {/* Auth Tab selectors */}
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '24px', background: 'rgba(0,0,0,0.2)', padding: '4px', borderRadius: '9999px', border: '1px solid var(--border)' }}>
-              <button
-                onClick={() => setAuthTab('google')}
-                style={{
-                  flex: 1, padding: '10px 16px', borderRadius: '9999px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600,
-                  background: authTab === 'google' ? 'var(--surface-alt)' : 'transparent', color: authTab === 'google' ? '#fff' : 'var(--text-secondary)'
-                }}
-              >
-                Google Auth
-              </button>
-              <button
-                onClick={() => setAuthTab('github')}
-                style={{
-                  flex: 1, padding: '10px 16px', borderRadius: '9999px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600,
-                  background: authTab === 'github' ? 'var(--surface-alt)' : 'transparent', color: authTab === 'github' ? '#fff' : 'var(--text-secondary)'
-                }}
-              >
-                GitHub Auth
-              </button>
-              <button
-                onClick={() => setAuthTab('email')}
-                style={{
-                  flex: 1, padding: '10px 16px', borderRadius: '9999px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600,
-                  background: authTab === 'email' ? 'var(--surface-alt)' : 'transparent', color: authTab === 'email' ? '#fff' : 'var(--text-secondary)'
-                }}
-              >
-                Credentials
-              </button>
+            <div className="flex gap-2 mb-6 bg-slate-950/60 p-1 rounded-xl border border-slate-800">
+              <button onClick={() => setAuthTab('google')} className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all ${authTab === 'google' ? 'bg-slate-900 text-white' : 'text-slate-400'}`}>Google Auth</button>
+              <button onClick={() => setAuthTab('github')} className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all ${authTab === 'github' ? 'bg-slate-900 text-white' : 'text-slate-400'}`}>GitHub Auth</button>
+              <button onClick={() => setAuthTab('email')} className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-all ${authTab === 'email' ? 'bg-slate-900 text-white' : 'text-slate-400'}`}>Credentials</button>
             </div>
 
-            {/* Google or GitHub fast authorization */}
             {(authTab === 'google' || authTab === 'github') && (
-              <div style={{ padding: '24px 0' }}>
-                <button
+              <div className="py-8 space-y-4">
+                <button 
                   onClick={async () => {
-                    // Fast OAuth Mock Logins
                     try {
                       await login('demo@copilot.ai', 'password123');
                       setAuthModal(null);
                       navigate('/career');
-                    } catch (err) {
-                      setLocalAuthError('OAuth Simulation Failure');
+                    } catch {
+                      setLocalAuthError('Fast oauth connection issue.');
                     }
                   }}
-                  className="btn-saas-gradient"
-                  style={{ width: '100%', padding: '14px 24px', justifyContent: 'center' }}
+                  className="w-full py-3.5 bg-gradient-to-r from-sky-400 via-purple-500 to-indigo-500 hover:from-sky-500 hover:via-purple-600 hover:to-indigo-600 text-white font-bold rounded-xl shadow-lg transition-all"
                 >
-                  Authorize Fast Simulation with {authTab === 'google' ? 'Google' : 'GitHub'} 🚀
+                  Simulate {authTab === 'google' ? 'Google' : 'GitHub'} Fast Signin 🚀
                 </button>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '12px' }}>
+                <p className="text-[10px] text-slate-500 leading-normal">
                   Click to bypass standard forms and load placement simulation instantly.
                 </p>
               </div>
             )}
 
-            {/* Standard credentials form */}
             {authTab === 'email' && (
-              <form onSubmit={handleAuthSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'left' }}>
-                
+              <form onSubmit={handleAuthSubmit} className="space-y-4 text-left">
                 {authModal === 'signup' && (
                   <div>
-                    <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Full Name</label>
-                    <input
-                      type="text"
-                      required
+                    <label className="text-xs font-semibold text-slate-400 block mb-1">Full Name</label>
+                    <input 
+                      type="text" 
+                      required 
                       value={authForm.name}
                       onChange={(e) => setAuthForm(prev => ({ ...prev, name: e.target.value }))}
                       placeholder="e.g. John Doe"
-                      style={{
-                        width: '100%', padding: '12px 18px', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border)',
-                        borderRadius: 'var(--radius-sm)', color: '#fff', fontSize: '0.9rem', outline: 'none'
-                      }}
+                      className="w-full bg-slate-950 border border-slate-800 py-2.5 px-4 text-xs rounded-lg text-white"
                     />
                   </div>
                 )}
-
                 <div>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Email Address</label>
-                  <input
-                    type="email"
-                    required
+                  <label className="text-xs font-semibold text-slate-400 block mb-1">Email Address</label>
+                  <input 
+                    type="email" 
+                    required 
                     value={authForm.email}
                     onChange={(e) => setAuthForm(prev => ({ ...prev, email: e.target.value }))}
                     placeholder="e.g. candidate@domain.com"
-                    style={{
-                      width: '100%', padding: '12px 18px', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border)',
-                      borderRadius: 'var(--radius-sm)', color: '#fff', fontSize: '0.9rem', outline: 'none'
-                    }}
+                    className="w-full bg-slate-950 border border-slate-800 py-2.5 px-4 text-xs rounded-lg text-white"
                   />
                 </div>
-
                 <div>
-                  <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Encrypted Password</label>
-                  <input
-                    type="password"
-                    required
+                  <label className="text-xs font-semibold text-slate-400 block mb-1">Password</label>
+                  <input 
+                    type="password" 
+                    required 
                     value={authForm.password}
                     onChange={(e) => setAuthForm(prev => ({ ...prev, password: e.target.value }))}
                     placeholder="Minimum 6 characters..."
-                    style={{
-                      width: '100%', padding: '12px 18px', background: 'rgba(0,0,0,0.2)', border: '1px solid var(--border)',
-                      borderRadius: 'var(--radius-sm)', color: '#fff', fontSize: '0.9rem', outline: 'none'
-                    }}
+                    className="w-full bg-slate-950 border border-slate-800 py-2.5 px-4 text-xs rounded-lg text-white"
                   />
                 </div>
 
-                {localAuthError && (
-                  <div style={{ color: 'var(--danger)', fontSize: '0.82rem', fontWeight: 600 }}>
-                    ⚠️ {localAuthError}
-                  </div>
-                )}
+                {localAuthError && <div className="text-xs font-semibold text-red-400">⚠️ {localAuthError}</div>}
 
-                <button
-                  type="submit"
-                  disabled={isAuthLoading}
-                  className="btn-saas-gradient"
-                  style={{ width: '100%', padding: '14px 24px', justifyContent: 'center', marginTop: '8px', opacity: isAuthLoading ? 0.6 : 1 }}
-                >
-                  {isAuthLoading ? 'Processing Credentials...' : authModal === 'login' ? 'Sign In Workspace' : 'Register Secure Profile'}
+                <button type="submit" disabled={isAuthLoading} className="w-full py-3.5 bg-gradient-to-r from-sky-400 to-purple-500 text-white font-extrabold text-xs rounded-xl shadow-lg mt-2">
+                  {isAuthLoading ? 'Connecting auth session...' : authModal === 'login' ? 'Sign In Workspace' : 'Register Secure Profile'}
                 </button>
-
               </form>
             )}
 
-            <div style={{ borderTop: '1px solid var(--border)', marginTop: '24px', paddingTop: '16px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+            <div className="border-t border-slate-800/60 mt-6 pt-4 text-xs text-slate-400">
               {authModal === 'login' ? (
-                <span>New candidate? <button onClick={() => triggerAuthFromPlan('signup')} style={{ color: 'var(--primary)', fontWeight: 700, cursor: 'pointer' }}>Create placement profile</button></span>
+                <span>New candidate? <button onClick={() => triggerAuthFromPlan('signup')} className="text-sky-400 font-bold">Register profile</button></span>
               ) : (
-                <span>Already have a profile? <button onClick={() => triggerAuthFromPlan('login')} style={{ color: 'var(--primary)', fontWeight: 700, cursor: 'pointer' }}>Sign in to hub</button></span>
+                <span>Already registered? <button onClick={() => triggerAuthFromPlan('login')} className="text-sky-400 font-bold">Sign in</button></span>
               )}
             </div>
 
           </div>
         </div>
       )}
-
-      {/* 9. FOOTER SECTION */}
-      <footer className="footer-shell" style={{ marginTop: '80px', borderTop: '1px solid var(--border)', background: 'var(--surface)', position: 'relative', zIndex: 10 }}>
-        <div className="footer-grid-saas" style={{ maxWidth: '1200px', margin: '0 auto', padding: '40px 0 20px', textAlign: 'left' }}>
-          
-          {/* Col 1 */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div className="logo-icon" style={{ width: '32px', height: '32px', fontSize: '0.9rem' }}>Ω</div>
-              <strong style={{ fontSize: '1.2rem', fontWeight: 800 }}>AI Career Copilot</strong>
-            </div>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-              World-class automated placement suite guiding software engineering and product seekers directly into tech roles.
-            </p>
-            <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-              © 2026 AI Career Copilot Inc. <br/>All vectors secure.
-            </div>
-          </div>
-
-          {/* Col 2 */}
-          <div>
-            <h4 style={{ fontSize: '0.9rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text)', marginBottom: '16px', letterSpacing: '0.05em' }}>Capabilities</h4>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-              <li><Link to="/resume" style={{ cursor: 'pointer' }}>ATS Resume Analyzer</Link></li>
-              <li><Link to="/interview" style={{ cursor: 'pointer' }}>Mock Voice Simulator</Link></li>
-              <li><Link to="/career" style={{ cursor: 'pointer' }}>Semantic Skill Scan</Link></li>
-              <li><Link to="/roadmap" style={{ cursor: 'pointer' }}>Learning Milestone Hub</Link></li>
-              <li><Link to="/sandbox" style={{ cursor: 'pointer' }}>IDE Coding Sandbox</Link></li>
-            </ul>
-          </div>
-
-          {/* Col 3 */}
-          <div>
-            <h4 style={{ fontSize: '0.9rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text)', marginBottom: '16px', letterSpacing: '0.05em' }}>Resources</h4>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-              <li><Link to="/about" style={{ cursor: 'pointer' }}>Overview Docs</Link></li>
-              <li><a href="#ai-systems" style={{ cursor: 'pointer' }}>FastAPI Gateway Spec</a></li>
-              <li><a href="#chat-preview" style={{ cursor: 'pointer' }}>API Schema Keys</a></li>
-              <li><a href="#pricing" style={{ cursor: 'pointer' }}>SaaS Subscriptions</a></li>
-            </ul>
-          </div>
-
-          {/* Col 4 */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <h4 style={{ fontSize: '0.9rem', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text)', marginBottom: '16px', letterSpacing: '0.05em' }}>Stay Ahead</h4>
-            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
-              Subscribe to get seasonal placement strategies, prompt templates, and core platform updates.
-            </p>
-            <form onSubmit={(e) => { e.preventDefault(); alert('Newsletter subscribed successfully!'); }} style={{ display: 'flex', gap: '8px' }}>
-              <input
-                type="email"
-                required
-                placeholder="developer@domain.com"
-                style={{
-                  flex: 1, padding: '10px 14px', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border)',
-                  borderRadius: '9999px', color: '#fff', fontSize: '0.8rem', outline: 'none'
-                }}
-              />
-              <button type="submit" className="btn-saas-gradient" style={{ padding: '10px 16px', fontSize: '0.8rem' }}>
-                Join
-              </button>
-            </form>
-          </div>
-
-        </div>
-      </footer>
 
     </div>
   );
