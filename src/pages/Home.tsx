@@ -24,7 +24,7 @@ interface Testimonial {
 }
 
 export default function Home() {
-  const { resumeScore, interviewConfidence, jobs, roadmap } = useAppContext();
+  const { resumeScore, interviewConfidence, jobs, roadmap, theme } = useAppContext();
   const { login, signup, isAuthenticated, isAuthLoading, authError } = useAuthContext();
   const navigate = useNavigate();
 
@@ -322,7 +322,9 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-100 relative overflow-hidden font-sans select-none">
+    <div className={`min-h-screen relative overflow-hidden font-sans select-none transition-colors duration-300 ${
+      theme === 'light' ? 'bg-[#f8fafc] text-slate-900' : 'bg-[#030712] text-slate-100'
+    }`}>
       
       {/* Background grids & custom radial glow gradients */}
       <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(rgba(255,255,255,0.005)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.005)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0" />
