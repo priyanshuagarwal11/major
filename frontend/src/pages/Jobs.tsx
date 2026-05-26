@@ -540,7 +540,7 @@ export default function Jobs() {
                   Insider Talent Tips
                 </h4>
                 <p style={{ fontSize: '0.85rem', lineHeight: '1.5', margin: 0, fontStyle: 'italic' }}>
-                  "{getCompanyStrategy(selectedStrategyJob).insiderTips}"
+                  {"\""}{getCompanyStrategy(selectedStrategyJob).insiderTips}{"\""}
                 </p>
               </div>
             </div>

@@ -19,7 +19,7 @@ export default function Interview() {
   const [answerInput, setAnswerInput] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [isMicActive, setIsMicActive] = useState(false);
-  const [speechTimer, setSpeechTimer] = useState<any | null>(null);
+  const [speechTimer, setSpeechTimer] = useState<ReturnType<typeof setInterval> | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -123,7 +123,7 @@ export default function Interview() {
                 <select 
                   className="form-select"
                   value={selectedMode}
-                  onChange={(e) => setSelectedMode(e.target.value as any)}
+                  onChange={(e) => setSelectedMode(e.target.value as 'technical' | 'behavioral' | 'systems')}
                 >
                   <option value="technical">Technical Coding & Syntax Core</option>
                   <option value="behavioral">HR Behavioral (STAR Storytelling)</option>
@@ -234,7 +234,7 @@ export default function Interview() {
                 <div style={{ textAlign: 'center', padding: '40px 10px', color: 'var(--text-muted)' }}>
                   <div style={{ fontSize: '2.5rem', marginBottom: '12px' }}>📊</div>
                   <h4>No evaluations yet</h4>
-                  <small>Answer the recruiter's prompt to generate your first score audit report.</small>
+                  <small>Answer the recruiter&apos;s prompt to generate your first score audit report.</small>
                 </div>
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: '420px', overflowY: 'auto', paddingRight: '4px' }}>
@@ -257,7 +257,7 @@ export default function Interview() {
                           </span>
                         </div>
                         <p style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--primary)', marginBottom: '8px' }}>
-                          "{interviewSession.questions[qIdx]}"
+                          {"\""}{interviewSession.questions[qIdx]}{"\""}
                         </p>
                         
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.78rem', borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '8px' }}>

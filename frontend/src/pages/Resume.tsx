@@ -183,7 +183,7 @@ export default function Resume() {
                       margin: '8px 0'
                     }}
                   >
-                    "{fileName}"
+                    {"\""}{fileName}{"\""}
                   </p>
                   <small style={{ textDecoration: 'underline', color: 'var(--primary)' }}>
                     Click to upload a different draft
@@ -473,11 +473,11 @@ export default function Resume() {
         </div>
 
         <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-          Paste a generic, passive bullet point below. The optimizer will rebuild it using Google's{' '}
+          Paste a generic, passive bullet point below. The optimizer will rebuild it using Google&apos;s{' '}
           <strong>X-Y-Z formula</strong>:
           <span style={{ color: 'var(--primary)', fontWeight: 600 }}>
             {' '}
-            "Accomplished [X] as measured by [Y], by doing [Z]"
+            {"\""}Accomplished [X] as measured by [Y], by doing [Z]{"\""}
           </span>
           .
         </p>
@@ -541,7 +541,7 @@ export default function Resume() {
                   color: 'var(--text)'
                 }}
               >
-                "{optimizedResult}"
+                {"\""}{optimizedResult}{"\""}
               </p>
 
               <div

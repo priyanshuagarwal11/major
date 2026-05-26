@@ -103,7 +103,7 @@ export default function Dashboard() {
             <span>⚡</span> Priority Action
           </div>
           <p style={{ fontSize: '0.95rem', margin: '8px 0 16px', lineHeight: '1.6', color: 'var(--text)' }}>
-            "{nextAction}"
+            {"\""}{nextAction}{"\""}
           </p>
           <Link to="/resume" className="btn-secondary" style={{ padding: '6px 14px', fontSize: '0.85rem', display: 'inline-flex' }}>
             Optimize Bullets 🚀

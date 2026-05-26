@@ -260,7 +260,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     
     // Generate simulated intelligent feedback based on answer characteristics
     let score = Math.floor(Math.random() * 3) + 7; // score between 7 and 9
-    let strengths = 'Demonstrated clear technical vocabulary, referenced the correct architectural concepts, and maintained a polite structured tone.';
+    const strengths = 'Demonstrated clear technical vocabulary, referenced the correct architectural concepts, and maintained a polite structured tone.';
     let gaps = 'Did not elaborate on measurable scaling numbers or list explicit trade-offs between alternative libraries.';
     let proAnswer = 'To optimize frontend rendering: Use React Window/Virtual to only render visible nodes, store heavy computation using useMemo, defer offscreen renders, and apply lazy loading.';
 
