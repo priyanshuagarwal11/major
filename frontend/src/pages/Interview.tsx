@@ -25,7 +25,9 @@ export default function Interview() {
 
   // Auto-scroll chat feed
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (interviewSession?.chatHistory?.length) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [interviewSession?.chatHistory]);
 
   const handleStart = (e: React.FormEvent) => {

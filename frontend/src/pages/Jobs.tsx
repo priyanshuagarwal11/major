@@ -334,11 +334,7 @@ export default function Jobs() {
                           <button
                             type="button"
                             onClick={() => openEditForm(job)}
-                            style={{
-                              fontSize: '0.78rem',
-                              color: 'var(--primary)',
-                              fontWeight: 700
-                            }}
+                            className="btn-saas-outline-glow btn-sm"
                             title="Edit application"
                           >
                             Edit
@@ -347,11 +343,7 @@ export default function Jobs() {
                           <button
                             type="button"
                             onClick={() => deleteJob(job.id)}
-                            style={{
-                              fontSize: '0.78rem',
-                              color: 'var(--danger)',
-                              fontWeight: 700
-                            }}
+                            className="btn-danger btn-sm"
                             title="Remove application"
                           >
                             Delete
@@ -413,8 +405,7 @@ export default function Jobs() {
                       <div className="kanban-card-footer" style={{ padding: '8px 0 0', marginTop: '8px' }}>
                         <button
                           type="button"
-                          className="btn-secondary"
-                          style={{ padding: '2px 8px', fontSize: '0.75rem', borderRadius: '4px' }}
+                          className="btn-secondary btn-icon"
                           disabled={col === 'Wishlist'}
                           onClick={() => moveJob(job.id, 'left')}
                         >
@@ -427,8 +418,7 @@ export default function Jobs() {
 
                         <button
                           type="button"
-                          className="btn-secondary"
-                          style={{ padding: '2px 8px', fontSize: '0.75rem', borderRadius: '4px' }}
+                          className="btn-secondary btn-icon"
                           disabled={col === 'Rejected'}
                           onClick={() => moveJob(job.id, 'right')}
                         >

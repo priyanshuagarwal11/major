@@ -105,7 +105,7 @@ export default function Dashboard() {
           <p style={{ fontSize: '0.95rem', margin: '8px 0 16px', lineHeight: '1.6', color: 'var(--text)' }}>
             {"\""}{nextAction}{"\""}
           </p>
-          <Link to="/resume" className="btn-secondary" style={{ padding: '6px 14px', fontSize: '0.85rem', display: 'inline-flex' }}>
+          <Link to="/resume" className="btn-secondary btn-sm">
             Optimize Bullets 🚀
           </Link>
         </div>

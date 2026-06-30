@@ -95,7 +95,18 @@ export default function Signup() {
             background:'linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(168, 85, 247, 0.06)), var(--surface)'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Link
+            to="/"
+            aria-label="Go to home"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              cursor: 'pointer',
+              textDecoration: 'none',
+              color: 'inherit'
+            }}
+          >
             <div
               style={{
                 width: '40px',
@@ -121,7 +132,7 @@ export default function Signup() {
             >
               AI Career Copilot
             </span>
-          </div>
+          </Link>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -364,8 +375,7 @@ export default function Signup() {
                   type="button"
                   onClick={() => handleOAuthSignup('Google')}
                   disabled={isFormSubmitting}
-                  className="btn-secondary"
-                  style={{ borderRadius: '12px', justifyContent: 'center' }}
+                  className="btn-secondary btn-sm"
                 >
                   <Chrome size={16} color="var(--primary)" /> Google
                 </button>
@@ -374,8 +384,7 @@ export default function Signup() {
                   type="button"
                   onClick={() => handleOAuthSignup('GitHub')}
                   disabled={isFormSubmitting}
-                  className="btn-secondary"
-                  style={{ borderRadius: '12px', justifyContent: 'center' }}
+                  className="btn-secondary btn-sm"
                 >
                   <Github size={16} color="var(--secondary)" /> GitHub
                 </button>

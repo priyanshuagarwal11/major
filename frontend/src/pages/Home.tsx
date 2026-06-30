@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useAuthContext } from '../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import GlassCard from '../components/GlassCard';
 import { 
   FileText, Mic, Target, Map, Terminal, FolderCheck, CheckCircle2, 
   XCircle, Sparkles, Chrome, Github, Eye, EyeOff, AlertCircle, 
@@ -64,7 +65,9 @@ export default function Home() {
 
   // Auto-scroll chat window
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatMessages.length > 1 || isTyping) {
+      chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [chatMessages, isTyping]);
 
   // Simulated Resume Scanner Process
@@ -276,11 +279,13 @@ export default function Home() {
   const getRadarPoints = () => {
     switch (targetRole) {
       case 'backend':
-        return "150,50 230,120 200,210 100,210 70,120";
+        return "90,35 150,70 120,110 60,110 30,70";
       case 'frontend':
-        return "150,90 240,110 180,220 120,200 60,140";
+        return "90,45 155,75 135,110 65,105 35,75";
       case 'ai':
-        return "150,30 210,130 220,190 80,190 90,130";
+        return "90,30 145,80 145,115 75,115 55,80";
+      default:
+        return "90,45 135,75 115,115 65,115 45,75";
     }
   };
 
@@ -331,58 +336,66 @@ export default function Home() {
       <div className="absolute top-[-100px] left-[-100px] w-[600px] h-[600px] rounded-full bg-sky-500/10 blur-[130px] pointer-events-none z-0" />
       <div className="absolute bottom-[-100px] right-[-100px] w-[650px] h-[650px] rounded-full bg-purple-500/10 blur-[140px] pointer-events-none z-0" />
       <div className="absolute top-[40%] left-[25%] w-[400px] h-[400px] rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none" />
+      <div className="floating-blob blob-1 pointer-events-none z-0" />
+      <div className="floating-blob blob-2 pointer-events-none z-0" />
 
       {/* SECTION 2 — HERO SECTION */}
       <section className="relative z-10 max-w-[1100px] mx-auto text-center px-6 pt-24 pb-16">
-        <motion.span 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] uppercase font-bold tracking-widest text-sky-400 bg-sky-500/10 rounded-full border border-sky-500/10 mb-6"
-        >
-          <Sparkles className="w-3.5 h-3.5" /> Next-Gen AI Placement Compass
-        </motion.span>
+        <div className="mx-auto max-w-4xl">
+          <GlassCard className="mx-auto text-center p-8"> 
+            <motion.span 
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] uppercase font-bold tracking-widest text-sky-400 bg-sky-500/10 rounded-full border border-sky-500/10 mb-4"
+            >
+              <Sparkles className="w-3.5 h-3.5" /> Next-Gen AI Placement Compass
+            </motion.span>
 
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.05] bg-gradient-to-b from-white via-slate-100 to-slate-400 bg-clip-text text-transparent max-w-4xl mx-auto mb-6"
-        >
-          Your Personal AI Career Mentor <br/>
-          <span className="bg-gradient-to-r from-sky-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
-            Powered by AI.
-          </span>
-        </motion.h1>
+            <motion.h1 
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.05 }}
+              className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-[1.05] bg-gradient-to-b from-white via-slate-100 to-slate-400 bg-clip-text text-transparent max-w-4xl mx-auto mb-4"
+            >
+              Your Personal AI Career Mentor <br/>
+              <span className="bg-gradient-to-r from-sky-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
+                Powered by AI.
+              </span>
+            </motion.h1>
 
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-slate-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-10"
-        >
-          Build ATS-friendly resumes, crack interviews, track jobs, practice coding, and become industry-ready with AI.
-        </motion.p>
+            <motion.p 
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.12 }}
+              className="text-slate-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-6"
+            >
+              Build ATS-friendly resumes, crack interviews, track jobs, practice coding, and become industry-ready with AI.
+            </motion.p>
 
-        {/* CTA buttons */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-wrap gap-4 justify-center mb-16"
-        >
-          {isAuthenticated ? (
-            <Link to="/career" className="bg-gradient-to-r from-sky-400 via-purple-500 to-indigo-500 hover:from-sky-500 hover:via-purple-600 hover:to-indigo-600 text-white font-bold text-sm px-8 py-4 rounded-xl shadow-lg hover:shadow-sky-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
-              Go to Dashboard 🚀
-            </Link>
-          ) : (
-            <button onClick={() => triggerAuthFromPlan('signup')} className="bg-gradient-to-r from-sky-400 via-purple-500 to-indigo-500 hover:from-sky-500 hover:via-purple-600 hover:to-indigo-600 text-white font-bold text-sm px-8 py-4 rounded-xl shadow-lg hover:shadow-sky-500/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
-              Get Started Free
-            </button>
-          )}
-          <button onClick={handleStartResumeScan} className="text-slate-300 hover:text-white bg-slate-900/60 border border-slate-800/80 hover:border-slate-700/80 font-bold text-sm px-8 py-4 rounded-xl transition-all">
-            Watch Scanner Demo 🧪
-          </button>
-        </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.18 }}
+              className="flex flex-wrap gap-4 justify-center mb-4"
+            >
+              {isAuthenticated ? (
+                <Link to="/career" className="btn-saas-gradient">
+                  Go to Dashboard 🚀
+                </Link>
+              ) : (
+                <button onClick={() => triggerAuthFromPlan('signup')} className="btn-saas-gradient">
+                  Get Started Free
+                </button>
+              )}
+              <button onClick={handleStartResumeScan} className="btn-secondary">
+                Watch Scanner Demo 🧪
+              </button>
+            </motion.div>
+          </GlassCard>
+        </div>
+        
+
+        {/* hero description and CTA are inside the GlassCard above */}
 
         {/* Stats Counter Section */}
         <motion.div 
@@ -467,7 +480,7 @@ export default function Home() {
               </div>
 
               {/* Right Mockup: SVG Competency Pentagon */}
-              <div className="lg:col-span-6 bg-slate-900/30 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between min-h-[280px]">
+              <div className="lg:col-span-6 bg-slate-900/30 border border-slate-800 p-6 rounded-2xl flex flex-col min-h-[280px]">
                 <div className="flex justify-between items-center mb-4">
                   <h4 className="text-xs font-bold text-slate-300">📊 Role Target Competency</h4>
                   <div className="flex gap-1.5">
@@ -477,27 +490,28 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-6 justify-center">
-                  <svg width="180" height="150" className="overflow-visible">
-                    <polygon points="90,15 160,65 130,135 50,135 20,65" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-                    <polygon points="90,45 135,75 115,115 65,115 45,75" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-                    <line x1="90" y1="80" x2="90" y2="15" stroke="rgba(255,255,255,0.08)" />
-                    <line x1="90" y1="80" x2="160" y2="65" stroke="rgba(255,255,255,0.08)" />
-                    <line x1="90" y1="80" x2="130" y2="135" stroke="rgba(255,255,255,0.08)" />
-                    <line x1="90" y1="80" x2="50" y2="135" stroke="rgba(255,255,255,0.08)" />
-                    <line x1="90" y1="80" x2="20" y2="65" stroke="rgba(255,255,255,0.08)" />
+                <div className="flex-1 flex flex-col items-center justify-center gap-6 text-center">
+                  <div className="flex items-center justify-center">
+                    <svg width="180" height="150" className="overflow-visible">
+                      <polygon points="90,15 160,65 130,135 50,135 20,65" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
+                      <polygon points="90,45 135,75 115,115 65,115 45,75" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+                      <line x1="90" y1="80" x2="90" y2="15" stroke="rgba(255,255,255,0.08)" />
+                      <line x1="90" y1="80" x2="160" y2="65" stroke="rgba(255,255,255,0.08)" />
+                      <line x1="90" y1="80" x2="130" y2="135" stroke="rgba(255,255,255,0.08)" />
+                      <line x1="90" y1="80" x2="50" y2="135" stroke="rgba(255,255,255,0.08)" />
+                      <line x1="90" y1="80" x2="20" y2="65" stroke="rgba(255,255,255,0.08)" />
 
-                    {/* Pentagon coordinate points */}
-                    <polygon 
-                      points={getRadarPoints()} 
-                      fill="rgba(56, 189, 248, 0.25)" 
-                      stroke="var(--primary)" 
-                      strokeWidth="1.5" 
-                      style={{ transition: 'all 0.4s ease' }} 
-                    />
-                  </svg>
+                      <polygon 
+                        points={getRadarPoints()} 
+                        fill="rgba(56, 189, 248, 0.25)" 
+                        stroke="var(--primary)" 
+                        strokeWidth="1.5" 
+                        style={{ transition: 'all 0.4s ease' }} 
+                      />
+                    </svg>
+                  </div>
 
-                  <div className="flex-1 space-y-4 text-xs">
+                  <div className="space-y-4 text-xs">
                     <div>
                       <span className="text-[10px] text-slate-500 block">Focus Track:</span>
                       <strong className="text-sky-400 capitalize">{targetRole} Development</strong>
@@ -534,7 +548,7 @@ export default function Home() {
           {/* Card 1: Resume Analyzer */}
           <motion.article 
             whileHover={{ y: -6 }}
-            className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-sky-500/30 hover:shadow-glow transition-all"
+            className="glass-card bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-sky-500/30 hover:shadow-glow transition-all"
           >
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-xl">
@@ -554,7 +568,7 @@ export default function Home() {
           {/* Card 2: Interview Room */}
           <motion.article 
             whileHover={{ y: -6 }}
-            className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-purple-500/30 hover:shadow-[0_0_30px_rgba(168,85,247,0.12)] transition-all"
+            className="glass-card bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-purple-500/30 hover:shadow-[0_0_30px_rgba(168,85,247,0.12)] transition-all"
           >
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-xl">
@@ -574,7 +588,7 @@ export default function Home() {
           {/* Card 3: Skill Gap */}
           <motion.article 
             whileHover={{ y: -6 }}
-            className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-cyan-500/30 hover:shadow-[0_0_30px_rgba(6,182,212,0.12)] transition-all"
+            className="glass-card bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-cyan-500/30 hover:shadow-[0_0_30px_rgba(6,182,212,0.12)] transition-all"
           >
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-xl">
@@ -594,7 +608,7 @@ export default function Home() {
           {/* Card 4: Roadmap */}
           <motion.article 
             whileHover={{ y: -6 }}
-            className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-warning/30 hover:shadow-[0_0_30px_rgba(245,158,11,0.12)] transition-all"
+            className="glass-card bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-warning/30 hover:shadow-[0_0_30px_rgba(245,158,11,0.12)] transition-all"
           >
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-xl">
@@ -614,7 +628,7 @@ export default function Home() {
           {/* Card 5: Sandbox */}
           <motion.article 
             whileHover={{ y: -6 }}
-            className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-sky-500/30 hover:shadow-glow transition-all"
+            className="glass-card bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-sky-500/30 hover:shadow-glow transition-all"
           >
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-xl">
@@ -634,7 +648,7 @@ export default function Home() {
           {/* Card 6: Kanban Tracker */}
           <motion.article 
             whileHover={{ y: -6 }}
-            className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.12)] transition-all"
+            className="glass-card bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between hover:border-emerald-500/30 hover:shadow-[0_0_30px_rgba(16,185,129,0.12)] transition-all"
           >
             <div className="space-y-4">
               <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-xl">
@@ -741,19 +755,19 @@ export default function Home() {
 
               {/* Server Nodes */}
               <div className="absolute top-[140px] left-[15px] z-20">
-                <button onClick={() => setSelectedSystemNode('voice')} className={`w-[70px] h-[70px] rounded-full font-extrabold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'voice' ? 'bg-gradient-to-r from-sky-400 to-purple-500 text-slate-950 shadow-sky-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>🎤 Voice</button>
+                <button onClick={() => setSelectedSystemNode('voice')} className={`w-[70px] h-[70px] rounded-full font-extrabold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'voice' ? 'btn-saas-gradient text-slate-950 shadow-sky-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>🎤 Voice</button>
               </div>
               <div className="absolute top-[54px] left-[220px] -translate-x-1/2 z-20">
-                <button onClick={() => setSelectedSystemNode('rag')} className={`px-5 py-3 rounded-full font-bold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'rag' ? 'bg-gradient-to-r from-sky-400 to-purple-500 text-slate-950 shadow-sky-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>🛰️ RAG Coordinator</button>
+                <button onClick={() => setSelectedSystemNode('rag')} className={`px-5 py-3 rounded-full font-bold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'rag' ? 'btn-saas-gradient text-slate-950 shadow-sky-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>🛰️ RAG Coordinator</button>
               </div>
               <div className="absolute bottom-[54px] left-[220px] -translate-x-1/2 z-20">
-                <button onClick={() => setSelectedSystemNode('pinecone')} className={`px-5 py-3 rounded-full font-bold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'pinecone' ? 'bg-gradient-to-r from-sky-400 to-purple-500 text-slate-950 shadow-purple-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>💾 Pinecone DB</button>
+                <button onClick={() => setSelectedSystemNode('pinecone')} className={`px-5 py-3 rounded-full font-bold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'pinecone' ? 'btn-saas-gradient text-slate-950 shadow-purple-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>💾 Pinecone DB</button>
               </div>
               <div className="absolute top-[35px] left-[420px] -translate-x-1/2 z-20">
-                <button onClick={() => setSelectedSystemNode('llm')} className={`w-[80px] h-[80px] rounded-full font-extrabold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'llm' ? 'bg-gradient-to-r from-sky-400 to-purple-500 text-slate-950 shadow-sky-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>🧠 LLM Core</button>
+                <button onClick={() => setSelectedSystemNode('llm')} className={`w-[80px] h-[80px] rounded-full font-extrabold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'llm' ? 'btn-saas-gradient text-slate-950 shadow-sky-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>🧠 LLM Core</button>
               </div>
               <div className="absolute bottom-[54px] left-[420px] -translate-x-1/2 z-20">
-                <button onClick={() => setSelectedSystemNode('stripe')} className={`px-5 py-3 rounded-full font-bold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'stripe' ? 'bg-gradient-to-r from-sky-400 to-purple-500 text-slate-950 shadow-purple-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>💳 Stripe JWT</button>
+                <button onClick={() => setSelectedSystemNode('stripe')} className={`px-5 py-3 rounded-full font-bold text-[10px] shadow-lg flex items-center justify-center transition-all ${selectedSystemNode === 'stripe' ? 'btn-saas-gradient text-slate-950 shadow-purple-500/20 scale-105' : 'bg-slate-900 border border-slate-800 text-slate-200'}`}>💳 Stripe JWT</button>
               </div>
             </div>
           </div>
@@ -870,15 +884,32 @@ export default function Home() {
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold mt-4">Simple, Predictable Tiers</h2>
           
-          <div className="flex items-center justify-center gap-3 mt-6">
-            <span className={`text-xs font-semibold ${billingInterval === 'monthly' ? 'text-white' : 'text-slate-500'}`}>Monthly</span>
-            <button 
-              onClick={() => setBillingInterval(prev => prev === 'monthly' ? 'yearly' : 'monthly')}
-              className="w-12 h-6 bg-slate-900 rounded-full border border-slate-800 p-0.5 relative transition-all"
+          <div className="pricing-toggle-box mx-auto mt-6 inline-flex items-center justify-center gap-6 rounded-full border px-4 py-2">
+            <span
+              role="button"
+              onClick={() => setBillingInterval('monthly')}
+              className={`text-xs font-semibold ${billingInterval === 'monthly' ? 'text-white' : 'text-slate-500'} cursor-pointer select-none`}
             >
-              <div className={`w-4 h-4 rounded-full bg-gradient-to-r from-sky-400 to-purple-500 absolute top-0.5 transition-all ${billingInterval === 'monthly' ? 'left-0.5' : 'left-6.5'}`} />
+              Monthly
+            </span>
+            <button 
+              type="button"
+              onClick={() => setBillingInterval(prev => prev === 'monthly' ? 'yearly' : 'monthly')}
+              className="pricing-toggle-button w-14 h-8 rounded-[18px] border border-slate-800 p-1 relative transition-all"
+            >
+              <div
+                className="pricing-toggle-knob w-5 h-5 rounded-[14px] bg-gradient-to-r from-sky-400 to-purple-500 absolute transition-all"
+                style={{
+                  top: '6px',
+                  left: billingInterval === 'monthly' ? '4px' : '30px'
+                }}
+              />
             </button>
-            <span className={`text-xs font-semibold ${billingInterval === 'yearly' ? 'text-white' : 'text-slate-500'} flex items-center gap-1.5`}>
+            <span
+              role="button"
+              onClick={() => setBillingInterval('yearly')}
+              className={`text-xs font-semibold ${billingInterval === 'yearly' ? 'text-white' : 'text-slate-500'} flex items-center gap-1.5 cursor-pointer select-none`}
+            >
               Yearly <strong className="text-[9px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/10 uppercase">Save 20%</strong>
             </span>
           </div>
@@ -887,24 +918,24 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
           {/* Card Free */}
-          <div className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between min-h-[460px] hover:border-slate-700/80 transition-all">
-            <div>
-              <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Free Starter</h3>
-              <p className="text-xs text-slate-500 min-h-[32px]">Scoring audits for entry candidates.</p>
-              <div className="text-3xl font-extrabold text-white my-6">$0</div>
-              <ul className="space-y-3.5 text-xs text-slate-400 border-t border-slate-800/60 pt-6">
-                <li className="flex items-center gap-2">✓ Basic ATS score parsing</li>
-                <li className="flex items-center gap-2">✓ 3 mock voice evaluations</li>
-                <li className="flex items-center gap-2">✓ 1 custom syllabus roadmap</li>
-                <li className="flex items-center gap-2">✓ Algorithm playground sandbox</li>
-              </ul>
-            </div>
-            <button onClick={() => triggerAuthFromPlan('signup')} className="w-full text-xs font-bold bg-slate-950 border border-slate-800 text-slate-300 py-3 rounded-xl mt-8 hover:bg-slate-900 transition-colors">Start Free Account</button>
-          </div>
+          <GlassCard
+            title="Free Starter"
+            className="pricing-card"
+            cta={<button onClick={() => triggerAuthFromPlan('signup')} className="pricing-cta-button">Start Free Account</button>}
+          >
+            <p className="text-xs text-slate-500 min-h-[32px]">Scoring audits for entry candidates.</p>
+            <div className="text-3xl font-extrabold text-white my-6">$0</div>
+            <ul className="space-y-3.5 text-xs text-slate-400 border-t border-slate-800/60 pt-6">
+              <li className="flex items-center gap-2">✓ Basic ATS score parsing</li>
+              <li className="flex items-center gap-2">✓ 3 mock voice evaluations</li>
+              <li className="flex items-center gap-2">✓ 1 custom syllabus roadmap</li>
+              <li className="flex items-center gap-2">✓ Algorithm playground sandbox</li>
+            </ul>
+          </GlassCard>
 
           {/* Card Pro copilot */}
-          <div className="bg-gradient-to-b from-[#111124] to-[#040713] border border-purple-500/30 p-8 rounded-2xl text-left flex flex-col justify-between min-h-[460px] shadow-glow relative overflow-hidden">
-            <div className="absolute top-0 right-0 bg-purple-500 text-white font-extrabold text-[8px] uppercase tracking-wider px-4 py-1.5 rounded-bl-xl">POPULAR</div>
+          <div className="pricing-card popular">
+            <div className="popular-badge">POPULAR</div>
             <div>
               <h3 className="text-sm font-bold text-purple-400 uppercase tracking-wider mb-2">Professional Pro</h3>
               <p className="text-xs text-slate-400 min-h-[32px]">Full-scale prep dashboard with dynamic evaluations.</p>
@@ -913,17 +944,17 @@ export default function Home() {
                 <span className="text-xs font-semibold text-slate-500"> / month</span>
               </div>
               <ul className="space-y-3.5 text-xs text-slate-200 border-t border-slate-800/60 pt-6">
-                <li className="flex items-center gap-2">✓ **Unlimited** resume score optimization</li>
-                <li className="flex items-center gap-2">✓ **Unlimited** speech mock interviews</li>
+                <li className="flex items-center gap-2">✓ Unlimited resume score optimization</li>
+                <li className="flex items-center gap-2">✓ Unlimited speech mock interviews</li>
                 <li className="flex items-center gap-2">✓ Vector semantic skill-gap audits</li>
                 <li className="flex items-center gap-2">✓ Sandbox lexical complexity logs</li>
               </ul>
             </div>
-            <button onClick={() => triggerAuthFromPlan('signup')} className="w-full text-xs font-bold bg-gradient-to-r from-sky-400 to-purple-500 text-white py-3 rounded-xl mt-8 shadow-lg hover:scale-[1.01] transition-all">Start 7-Day Trial</button>
+            <button onClick={() => triggerAuthFromPlan('signup')} className="pricing-cta-button pricing-cta-primary mt-8">Start 7-Day Trial</button>
           </div>
 
           {/* Card Ultimate AI */}
-          <div className="bg-slate-900/30 border border-slate-800/80 p-8 rounded-2xl text-left flex flex-col justify-between min-h-[460px] hover:border-slate-700/80 transition-all">
+          <div className="pricing-card">
             <div>
               <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">Ultimate AI</h3>
               <p className="text-xs text-slate-500 min-h-[32px]">For university cohort groups and placement heads.</p>
@@ -935,7 +966,7 @@ export default function Home() {
                 <li className="flex items-center gap-2">✓ Dedicated account manager</li>
               </ul>
             </div>
-            <a href="mailto:partners@copilot.ai" className="w-full text-center text-xs font-bold bg-slate-950 border border-slate-800 text-slate-300 py-3 rounded-xl mt-8 hover:bg-slate-900 transition-colors">Contact Partnerships</a>
+            <a href="mailto:partners@copilot.ai" className="pricing-cta-button mt-8">Contact Partnerships</a>
           </div>
 
         </div>
@@ -943,9 +974,9 @@ export default function Home() {
 
       {/* SECTION 8 — CTA SECTION */}
       <section className="relative z-10 max-w-[1100px] mx-auto px-6 py-20 text-center">
-        <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800/80 p-12 rounded-3xl shadow-glow relative overflow-hidden max-w-4xl mx-auto">
-          <div className="absolute top-[-20%] left-[-20%] w-[350px] h-[350px] rounded-full bg-sky-500/5 blur-[100px] pointer-events-none" />
-          <div className="absolute bottom-[-20%] right-[-20%] w-[350px] h-[350px] rounded-full bg-purple-500/5 blur-[100px] pointer-events-none" />
+        <div className="glass-card bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800/80 p-12 rounded-3xl shadow-glow relative overflow-hidden max-w-4xl mx-auto">
+          <div className="floating-blob blob-1" />
+          <div className="floating-blob blob-2" />
           
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-b from-white to-slate-400 bg-clip-text text-transparent mb-4">
             Start Building Your AI Career Today
@@ -956,11 +987,11 @@ export default function Home() {
 
           <div className="flex flex-wrap gap-4 justify-center">
             {isAuthenticated ? (
-              <Link to="/career" className="bg-gradient-to-r from-sky-400 to-purple-500 text-slate-950 font-extrabold text-xs px-8 py-3.5 rounded-xl hover:scale-102 transition-all">
+              <Link to="/career" className="btn-saas-gradient text-slate-950 font-extrabold text-xs px-8 py-3.5 rounded-xl hover:scale-102 transition-all">
                 Enter Placement Hub 🚀
               </Link>
             ) : (
-              <button onClick={() => triggerAuthFromPlan('signup')} className="bg-gradient-to-r from-sky-400 to-purple-500 text-white font-extrabold text-xs px-8 py-3.5 rounded-xl hover:scale-102 transition-all shadow-lg shadow-sky-500/10">
+              <button onClick={() => triggerAuthFromPlan('signup')} className="btn-saas-gradient text-white font-extrabold text-xs px-8 py-3.5 rounded-xl hover:scale-102 transition-all shadow-lg shadow-sky-500/10">
                 Create Free Profile
               </button>
             )}
@@ -1065,7 +1096,7 @@ export default function Home() {
                       setLocalAuthError('Fast oauth connection issue.');
                     }
                   }}
-                  className="w-full py-3.5 bg-gradient-to-r from-sky-400 via-purple-500 to-indigo-500 hover:from-sky-500 hover:via-purple-600 hover:to-indigo-600 text-white font-bold rounded-xl shadow-lg transition-all"
+                  className="w-full py-3.5 btn-saas-gradient text-white font-bold rounded-xl shadow-lg transition-all"
                 >
                   Simulate {authTab === 'google' ? 'Google' : 'GitHub'} Fast Signin 🚀
                 </button>
@@ -1115,7 +1146,7 @@ export default function Home() {
 
                 {localAuthError && <div className="text-xs font-semibold text-red-400">⚠️ {localAuthError}</div>}
 
-                <button type="submit" disabled={isAuthLoading} className="w-full py-3.5 bg-gradient-to-r from-sky-400 to-purple-500 text-white font-extrabold text-xs rounded-xl shadow-lg mt-2">
+                <button type="submit" disabled={isAuthLoading} className="w-full py-3.5 btn-saas-gradient text-white font-extrabold text-xs rounded-xl shadow-lg mt-2">
                   {isAuthLoading ? 'Connecting auth session...' : authModal === 'login' ? 'Sign In Workspace' : 'Register Secure Profile'}
                 </button>
               </form>

@@ -1,3 +1,5 @@
+import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useAuthContext } from '../context/AuthContext';
@@ -7,6 +9,9 @@ export default function Header() {
   const { user, isAuthenticated, logout } = useAuthContext();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false);
+  const lastScrollY = useRef(0);
 
   const isLandingPage = location.pathname === '/';
 
@@ -25,8 +30,41 @@ export default function Header() {
     }
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const threshold = 20;
+
+      if (Math.abs(currentScrollY - lastScrollY.current) < threshold) {
+        return;
+      }
+
+      if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
+        setIsHeaderHidden(true);
+      } else {
+        setIsHeaderHidden(false);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const headerVariants = {
+    hidden: { y: -120, opacity: 0 },
+    visible: { y: 0, opacity: 1 }
+  };
+
   return (
-    <header className="header-shell">
+    <motion.header
+      initial="visible"
+      animate={isHeaderHidden ? 'hidden' : 'visible'}
+      variants={headerVariants}
+      transition={{ duration: 0.45, ease: 'easeInOut' }}
+      className={`header-shell glass-card ${isHeaderHidden ? 'header-hidden' : ''}`}
+    >
       <Link to="/" className="brand" aria-label="AI Career Copilot home">
         <div className="logo-icon">
           <span>Ω</span>
@@ -120,6 +158,6 @@ export default function Header() {
           {theme === 'dark' ? '🌙' : '☀️'}
         </button>
       </div>
-    </header>
+    </motion.header>
   );
 }

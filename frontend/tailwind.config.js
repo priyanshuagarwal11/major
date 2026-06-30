@@ -14,6 +14,8 @@ export default {
           DEFAULT: "#38bdf8",
           dark: "#0284c7"
         },
+        mauve: '#F472B6',
+        gold: '#F59E0B',
         secondary: {
           DEFAULT: "#a855f7",
           dark: "#8b5cf6"
@@ -23,6 +25,10 @@ export default {
           light: "#34d399"
         },
         border: "rgba(148, 163, 184, 0.1)",
+      },
+      backgroundImage: {
+        'grad-primary': "linear-gradient(135deg, #38BDF8 0%, #7C3AED 60%)",
+        'grad-mauve': "linear-gradient(120deg, #F472B6 0%, #A855F7 55%, #4F46E5 100%)",
       },
       borderRadius: {
         "2xl": "16px",

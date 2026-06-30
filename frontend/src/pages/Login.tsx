@@ -95,7 +95,18 @@ export default function Login() {
             background:'linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(168, 85, 247, 0.06)), var(--surface)'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Link
+            to="/"
+            aria-label="Go to home"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              cursor: 'pointer',
+              textDecoration: 'none',
+              color: 'inherit'
+            }}
+          >
             <div
               style={{
                 width: '40px',
@@ -120,7 +131,7 @@ export default function Login() {
             >
               AI Career Copilot
             </span>
-          </div>
+          </Link>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}

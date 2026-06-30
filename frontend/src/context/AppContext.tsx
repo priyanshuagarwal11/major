@@ -145,7 +145,13 @@ const mockRecruiters = [
 const AppContext = createContext<AppContextValue | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme');
+      return savedTheme === 'light' ? 'light' : 'dark';
+    }
+    return 'dark';
+  });
   const [features] = useState<FeatureItem[]>(initialFeatures);
   const [resumeScore, setResumeScore] = useState(84);
   const [interviewConfidence, setInterviewConfidence] = useState('Rising');
@@ -168,11 +174,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     } else {
       document.body.classList.remove('light-theme');
     }
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme', theme);
+    }
   }, [theme]);
 
   useEffect(() => {
-  saveStoredJobs(jobs);
-}, [jobs]);
+    saveStoredJobs(jobs);
+  }, [jobs]);
 
   const toggleTheme = useCallback(() => {
     setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
